@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import "./App.css";
-import Home from "./components/Home";
-import Login from "./components/Login";
+import { useState } from "react"
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
+import "./App.css"
+import Home from "./components/Home"
+import Login from "./components/Login"
+import { useStateValue } from "./components/StateProvider"
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [{ user }, dispatch] = useStateValue()
   return (
     <div className="App">
       {!user ? (
@@ -22,7 +23,7 @@ function App() {
         </div>
       )}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
