@@ -1,0 +1,30 @@
+.starter__container {
+  color: #333;
+  display: flex;
+  margin: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  width: 100%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: flex-start;
+  justify-self: center;
+  flex-direction: column;
+}
+.starter__container > h2 {
+  font-size: 35px;
+  margin-top: 30px;
+}
+.starter__subcontainer {
+  display: flex;
+  flex-direction: row;
+  margin-top: 40px;
+}
+.starter__subcontainer--user {
+  width: 50%;
+}
+.form__container {
+  margin-top: 20px;
+}
+.starter__subcontainer--pokemon {
+  width: 50%;
+}

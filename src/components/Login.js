@@ -14,15 +14,16 @@ function Login() {
         dispatch({
           type: actionTypes.SET_USER,
           user: result.user,
+          isNew: result.additionalUserInfo.isNewUser,
         })
         console.log(result)
       })
       .catch((e) => console.log(e.message))
   }
   return (
-    <div class="container">
-      <div class="display-section"></div>
-      <div class="login-section">
+    <div className="container">
+      <div className="display-section"></div>
+      <div className="login-section">
         <h2>Login</h2>
         <Button onClick={signIn}>Login with Google</Button>
       </div>
