@@ -1,8 +1,12 @@
 import { Button, TextField } from "@material-ui/core";
-import React from "react";
+import React, { useState } from "react";
 import "./Starter.css";
 import "./type.css";
 function Starter() {
+  const [starter, setStarter] = useState(null);
+  const selectedStarter = (e) => {
+    setStarter(e);
+  };
   return (
     <div className="container" id="starter">
       <div className="starter__container">
