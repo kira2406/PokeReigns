@@ -4,19 +4,20 @@ import "./Starter.css";
 import "./type.css";
 function Starter() {
   const [starter, setStarter] = useState(null);
-  const selectedStarter = (e) => {
-    setStarter(e);
-  };
+
   return (
     <div className="container" id="starter">
       <div className="starter__container">
         <h2>Welcome to PokeReigns!!</h2>
         <div className="starter__subcontainer">
           <div className="starter__subcontainer--pokemon">
-            <h2>Choose your starter pokemon </h2>
+            <h2>Choose your starter pokemon {starter}</h2>
             <div className="pokemon__container-column">
               <div className="pokemon__container-row">
-                <div className="pokemon__container-card grass__type">
+                <div
+                  className="pokemon__container-card grass__type"
+                  onClick={() => setStarter("Bulbasaur")}
+                >
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/bulbasaur.gif" alt="Bulbasaur" />
                   </div>
