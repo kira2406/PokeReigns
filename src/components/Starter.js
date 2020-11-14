@@ -3,9 +3,12 @@ import React, { useEffect, useState } from "react"
 import "./Starter.css"
 import "./type.css"
 import db from "./firebase"
+import { Redirect } from "react-router-dom"
 function Starter() {
   const [starter, setStarter] = useState(null)
   const [pokemon, setPokemon] = useState(null)
+  const [name, setName] = useState("")
+  const [toHome, setToHome] = useState(false)
   useEffect(() => {
     if (starter)
       db.collection("pokemondb")
@@ -13,10 +16,18 @@ function Starter() {
         .get()
         .then((pokemon) => {
           setPokemon(pokemon.data())
-          console.log(pokemon.data().name)
+          console.log(pokemon.data().name + " name:" + name)
         })
         .catch((error) => console.log(error))
   }, [starter])
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    console.log("On submitting" + pokemon.name + " " + name)
+    setToHome(true)
+  }
+  if (toHome) {
+    return <Redirect to="/home" />
+  }
 
   return (
     <div className="container" id="starter">
@@ -180,8 +191,13 @@ function Starter() {
                 placeholder="Your Name"
                 variant="outlined"
                 required
+                onChange={(e) => setName(e.target.value)}
               />
-              <Button className="start__button" type="submit">
+              <Button
+                className="start__button"
+                type="submit"
+                onClick={handleSubmit}
+              >
                 Let's Start!
               </Button>
             </div>

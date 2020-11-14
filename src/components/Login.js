@@ -4,6 +4,7 @@ import "./Login.css"
 import { auth, provider } from "./firebase"
 import { actionTypes } from "./reducer"
 import { useStateValue } from "./StateProvider"
+import { Redirect } from "react-router-dom"
 
 function Login() {
   const [{}, dispatch] = useStateValue()
