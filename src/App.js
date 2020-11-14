@@ -39,8 +39,28 @@ function App() {
             }
           }}
         />
-        <Route path="/home" exact component={Home} />
-        <Route path="/starter" exact component={StarterClass} />
+        <Route
+          path="/home"
+          exact
+          render={() => {
+            if (user) {
+              return <Home />
+            } else {
+              return <Redirect to="/login" />
+            }
+          }}
+        />
+        <Route
+          path="/starter"
+          exact
+          render={() => {
+            if (isNew) {
+              return <StarterClass />
+            } else {
+              return <Redirect to="/home" />
+            }
+          }}
+        />
       </div>
     </Router>
   )

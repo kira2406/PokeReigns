@@ -23,10 +23,6 @@ function Starter() {
   const handleSubmit = (event) => {
     event.preventDefault()
     console.log("On submitting" + pokemon.name + " " + name)
-    setToHome(true)
-  }
-  if (toHome) {
-    return <Redirect to="/home" />
   }
 
   return (
