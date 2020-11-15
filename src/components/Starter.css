@@ -103,3 +103,9 @@
 .n1t {
   color: red;
 }
+.error__red {
+  color: red;
+}
+.error_none {
+  display: none;
+}

@@ -2,13 +2,18 @@ import { Button, TextField } from "@material-ui/core"
 import React, { useEffect, useState } from "react"
 import "./Starter.css"
 import "./type.css"
-import db from "./firebase"
-import { Redirect } from "react-router-dom"
+import db, { auth } from "./firebase"
+import { Redirect, HashRouter, Route, useHistory } from "react-router-dom"
+
 function Starter() {
   const [starter, setStarter] = useState(null)
   const [pokemon, setPokemon] = useState(null)
   const [name, setName] = useState("")
   const [toHome, setToHome] = useState(false)
+  const [error, setError] = useState("")
+  const [perror, setPerror] = useState("")
+  const history = useHistory()
+
   useEffect(() => {
     if (starter)
       db.collection("pokemondb")
@@ -16,13 +21,49 @@ function Starter() {
         .get()
         .then((pokemon) => {
           setPokemon(pokemon.data())
-          console.log(pokemon.data().name + " name:" + name)
+          setPerror("")
         })
         .catch((error) => console.log(error))
   }, [starter])
+
+  //handleSubmit
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log("On submitting" + pokemon.name + " " + name)
+
+    if (!pokemon) {
+      setPerror("Choose your starter pokemon !")
+    }
+    if (!name) {
+      setError("Enter your name !")
+    }
+    if (!error && !perror) {
+      console.log("form submitting")
+      db.collection("users")
+        .doc(auth.currentUser.uid)
+        .set({
+          displayName: name,
+        })
+        .then((result) => {
+          db.collection("users")
+            .doc(auth.currentUser.uid)
+            .collection("roster")
+            .add({
+              pokemonName: pokemon.name,
+            })
+            .then((result) => {
+              history.push("/home")
+            })
+            .catch((e) => console.log(e))
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
+  }
+
+  //redirection example
+  const redirectElse = () => {
+    history.push("/new")
   }
 
   return (
@@ -187,8 +228,21 @@ function Starter() {
                 placeholder="Your Name"
                 variant="outlined"
                 required
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  if (e.target.value.length < 6) {
+                    setError("Minimum length must be 6 characters !")
+                  } else {
+                    setName(e.target.value)
+                    setError("")
+                  }
+                }}
               />
+              <p className={error !== "" ? "error__red" : "error__none"}>
+                {error}
+              </p>
+              <p className={perror !== "" ? "error__red" : "error__none"}>
+                {perror}
+              </p>
               <Button
                 className="start__button"
                 type="submit"
