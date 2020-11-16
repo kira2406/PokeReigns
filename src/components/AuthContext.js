@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import { auth } from "./firebase"
+import db, { auth } from "./firebase"
 import firebase from "firebase"
 
 const AuthContext = React.createContext()
@@ -11,6 +11,8 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
   const [loading, setLoading] = useState(true)
+  const [pokemons, setPokemons] = useState()
+  const [trainerName, setTrainerName] = useState("")
 
   function login(provider) {
     return auth.signInWithPopup(provider)
@@ -18,6 +20,14 @@ export function AuthProvider({ children }) {
 
   function logout() {
     return auth.signOut()
+  }
+
+  function setTrainer(trainerName) {
+    setTrainerName(trainerName)
+  }
+
+  function setPokemonData(pokes) {
+    setPokemons(pokes)
   }
 
   useEffect(() => {
@@ -32,6 +42,10 @@ export function AuthProvider({ children }) {
     currentUser,
     login,
     logout,
+    setTrainer,
+    trainerName,
+    pokemons,
+    setPokemonData,
   }
   return (
     <AuthContext.Provider value={value}>

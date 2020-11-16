@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react"
 import "./Starter.css"
 import "./type.css"
 import db, { auth } from "./firebase"
-import { Redirect, HashRouter, Route, useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom"
+import { useAuth } from "./AuthContext"
 
 function Starter() {
   const [starter, setStarter] = useState(null)
@@ -12,6 +13,7 @@ function Starter() {
   const [toHome, setToHome] = useState(false)
   const [error, setError] = useState("")
   const [perror, setPerror] = useState("")
+  const { currentUser } = useAuth()
   const history = useHistory()
 
   useEffect(() => {
@@ -39,13 +41,13 @@ function Starter() {
     if (!error && !perror) {
       console.log("form submitting")
       db.collection("users")
-        .doc(auth.currentUser.uid)
+        .doc(currentUser.uid)
         .set({
           displayName: name,
         })
         .then((result) => {
           db.collection("users")
-            .doc(auth.currentUser.uid)
+            .doc(currentUser.uid)
             .collection("roster")
             .add({
               pokemonName: pokemon.name,

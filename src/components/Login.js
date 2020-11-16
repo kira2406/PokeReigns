@@ -6,9 +6,11 @@ import { useHistory } from "react-router-dom"
 import { useAuth } from "./AuthContext"
 
 function Login() {
-  const { login, currentUser } = useAuth()
+  const { login, currentUser, setTrainer, setPokemonData } = useAuth()
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [starterRefer, setStarterRefer] = useState(false)
+  const [homeRefer, setHomeRefer] = useState(false)
   const history = useHistory()
 
   async function loginHandler() {
@@ -16,13 +18,33 @@ function Login() {
       setError("")
       setLoading(true)
       await login(provider)
-      //
-      history.push("/")
+      db.collection("users")
+        .doc(currentUser.uid)
+        .collection("roster")
+        .get()
+        .then((pokemon) => {
+          if (pokemon.exists) {
+            console.log(pokemon.data())
+            setHomeRefer(true)
+          } else {
+            console.log("no pokemon found")
+            setStarterRefer(true)
+          }
+        })
     } catch {
       setError("Failed to sign in")
     }
     setLoading(false)
     // history.push("/starter")
+  }
+
+  if (starterRefer) {
+    history.push("/starter")
+    setStarterRefer(false)
+  }
+  if (homeRefer) {
+    history.push("/home")
+    setHomeRefer(false)
   }
   // const signIn = () => {
   //   auth
