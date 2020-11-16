@@ -9,13 +9,14 @@ export default function Dashboard() {
   const [error, setError] = useState("")
   const history = useHistory()
 
-  function handleLogout() {
+  async function handleLogout() {
     setError("")
+
     try {
-      auth.signOut()
+      await logout()
       history.push("/login")
     } catch {
-      setError("Failed to logout")
+      setError("Failed to log out")
     }
   }
 
@@ -24,7 +25,9 @@ export default function Dashboard() {
       Dashboard
       <div>Email: {currentUser.email}</div>
       <div>User: {currentUser.displayName}</div>
-      <Button onClick={handleLogout}>Logout</Button>
+      <Button variant="link" onClick={handleLogout}>
+        Logout
+      </Button>
     </div>
   )
 }

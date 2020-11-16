@@ -10,13 +10,12 @@ function Login() {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const history = useHistory()
-  function loginHandler() {
+  async function loginHandler() {
     try {
       setError("")
       setLoading(true)
-      login(provider).then(() => {
-        history.push("/")
-      })
+      await login(provider)
+      history.push("/")
     } catch {
       setError("Failed to sign in")
     }
