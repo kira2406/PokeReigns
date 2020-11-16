@@ -1,5 +1,5 @@
 import { Button } from "@material-ui/core"
-import React, { Component } from "react"
+import React, { Component, useState } from "react"
 import "./Login.css"
 import db, { auth, provider } from "./firebase"
 import { useHistory } from "react-router-dom"
@@ -7,12 +7,21 @@ import { useAuth } from "./AuthContext"
 
 function Login() {
   const { login, currentUser } = useAuth()
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
   const history = useHistory()
   function loginHandler() {
-    auth.signInWithPopup(provider).then((result) => {
-      console.log(result.user)
-      // history.push("/starter")
-    })
+    try {
+      setError("")
+      setLoading(true)
+      login(provider).then(() => {
+        history.push("/")
+      })
+    } catch {
+      setError("Failed to sign in")
+    }
+    setLoading(false)
+    // history.push("/starter")
   }
   // const signIn = () => {
   //   auth

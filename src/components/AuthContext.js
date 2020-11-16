@@ -9,14 +9,19 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
+  const [loading, setLoading] = useState(true)
 
-  function login() {
-    const provider = new firebase.auth.GoogleAuthProvider()
+  function login(provider) {
     return auth.signInWithPopup(provider)
+  }
+
+  function logout() {
+    return auth.signOut()
   }
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
+      setLoading(false)
       setCurrentUser(user)
     })
     return unsubscribe
@@ -25,6 +30,11 @@ export function AuthProvider({ children }) {
   const value = {
     currentUser,
     login,
+    logout,
   }
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+    </AuthContext.Provider>
+  )
 }
