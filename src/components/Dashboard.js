@@ -2,7 +2,6 @@ import { Button } from "@material-ui/core"
 import React, { useState } from "react"
 import { useHistory } from "react-router-dom"
 import { useAuth } from "./AuthContext"
-import { auth } from "./firebase"
 
 export default function Dashboard() {
   const { currentUser, logout } = useAuth()
@@ -25,9 +24,8 @@ export default function Dashboard() {
       Dashboard
       <div>Email: {currentUser.email}</div>
       <div>User: {currentUser.displayName}</div>
-      <Button variant="link" onClick={handleLogout}>
-        Logout
-      </Button>
+      <div>uid: {currentUser.uid}</div>
+      <Button onClick={handleLogout}>Logout</Button>
     </div>
   )
 }

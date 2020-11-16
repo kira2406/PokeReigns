@@ -3,6 +3,7 @@ import { auth } from "./firebase"
 import firebase from "firebase"
 
 const AuthContext = React.createContext()
+
 export function useAuth() {
   return useContext(AuthContext)
 }
