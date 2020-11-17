@@ -27,8 +27,9 @@ export default function Home() {
         <h2>Poke Reigns</h2>
       </div>
       <div className="nav__container">
-        <Button>Home</Button>|<Button>Your Pokemon</Button>|
-        <Button>Maps</Button>|<Button>Battle</Button>|<Button>Profile</Button>|
+        <Button className="nav__button">Home</Button>|
+        <Button>Your Pokemon</Button>|<Button>Maps</Button>|
+        <Button>Battle</Button>|<Button>Profile</Button>|
         <Button onClick={handleLogout}>Logout</Button>
       </div>
 

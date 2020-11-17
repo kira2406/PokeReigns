@@ -5,6 +5,17 @@
   align-items: center;
   /* background-color: blue; */
 }
+button {
+  width: 50%;
+  border-radius: 0px !important;
+}
+button:hover {
+  background-color: #2196f3 !important;
+  color: white;
+}
+.nav__button {
+  background-color: lightseagreen;
+}
 .logo__container {
   height: 100px;
   text-align: start;
@@ -23,7 +34,7 @@
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  box-shadow: 0 1px 3px rgba(12, 28, 255, 0.562), 0 1px 2px rgb(9, 34, 255);
+  box-shadow: 0 1px 3px rgba(12, 109, 255, 0.562), 0 1px 2px rgb(9, 95, 255);
 }
 .user__container {
   padding: 40px;
