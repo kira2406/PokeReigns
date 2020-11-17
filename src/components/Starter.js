@@ -13,7 +13,7 @@ function Starter() {
   const [toHome, setToHome] = useState(false)
   const [error, setError] = useState("")
   const [perror, setPerror] = useState("")
-  const { currentUser } = useAuth()
+  const { currentUser, setTrainer } = useAuth()
   const history = useHistory()
 
   useEffect(() => {
@@ -46,6 +46,7 @@ function Starter() {
           displayName: name,
         })
         .then((result) => {
+          setTrainer(name)
           db.collection("users")
             .doc(currentUser.uid)
             .collection("roster")
@@ -53,7 +54,7 @@ function Starter() {
               pokemonName: pokemon.name,
             })
             .then((result) => {
-              history.push("/home")
+              history.push("/")
             })
             .catch((e) => console.log(e))
         })

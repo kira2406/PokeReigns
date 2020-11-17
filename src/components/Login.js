@@ -17,20 +17,21 @@ function Login() {
     try {
       setError("")
       setLoading(true)
-      await login(provider)
-      db.collection("users")
-        .doc(currentUser.uid)
-        .collection("roster")
-        .get()
-        .then((pokemon) => {
-          if (pokemon.exists) {
-            console.log(pokemon.data())
-            setHomeRefer(true)
-          } else {
-            console.log("no pokemon found")
-            setStarterRefer(true)
-          }
-        })
+      login(provider).then((result) => {
+        db.collection("users")
+          .doc(auth.currentUser.uid)
+          .get()
+          .then((pokemon) => {
+            if (pokemon.exists) {
+              console.log(pokemon.data())
+              setTrainer(pokemon.data().displayName)
+              setHomeRefer(true)
+            } else {
+              console.log("no pokemon found")
+              setStarterRefer(true)
+            }
+          })
+      })
     } catch {
       setError("Failed to sign in")
     }
@@ -43,7 +44,7 @@ function Login() {
     setStarterRefer(false)
   }
   if (homeRefer) {
-    history.push("/home")
+    history.push("/")
     setHomeRefer(false)
   }
   // const signIn = () => {
@@ -67,7 +68,9 @@ function Login() {
   // }
   return (
     <div className="container">
-      <div className="display-section">{currentUser && currentUser.email}</div>
+      <div className="display-section">
+        <h2>Poke Reigns</h2>
+      </div>
       <div className="login-section">
         <h2>Login</h2>
         <Button onClick={loginHandler}>Login with Google</Button>
