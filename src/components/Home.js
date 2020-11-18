@@ -21,6 +21,20 @@ export default function Home() {
     }
   }
 
+  useEffect(() => {
+    if (currentUser)
+      db.collection("users")
+        .doc(currentUser.uid)
+        .collection("roster")
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            console.log(doc.data())
+          })
+        })
+        .catch((e) => console.log(e))
+  }, [currentUser])
+
   return (
     <div className="home">
       <div className="logo__container">
