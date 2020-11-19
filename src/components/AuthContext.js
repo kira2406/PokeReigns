@@ -11,7 +11,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
   const [loading, setLoading] = useState(true)
-  const [pokemons, setPokemons] = useState()
+  const [pokemons, setPokemons] = useState([])
   const [trainerName, setTrainerName] = useState("")
 
   function login(provider) {
@@ -28,11 +28,20 @@ export function AuthProvider({ children }) {
 
   function setPokemonData(pokes) {
     setPokemons(pokes)
+    console.log("writing" + pokemons)
   }
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user)
+      if (user) {
+        setCurrentUser(user)
+        db.collection("users")
+          .doc(user.uid)
+          .get()
+          .then((result) => {
+            // setTrainer(result.data().displayName)
+          })
+      }
       setLoading(false)
     })
     return unsubscribe
@@ -40,12 +49,15 @@ export function AuthProvider({ children }) {
 
   const value = {
     currentUser,
+    setCurrentUser,
     login,
     logout,
     setTrainer,
     trainerName,
     pokemons,
     setPokemonData,
+    setLoading,
+    loading,
   }
   return (
     <AuthContext.Provider value={value}>
