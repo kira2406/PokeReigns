@@ -112,3 +112,6 @@ button:hover {
   color: rgb(12, 28, 255);
   /* background-color: salmon; */
 }
+.level {
+  font-size: 10px;
+}

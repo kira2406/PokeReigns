@@ -16,13 +16,13 @@ function App() {
     setCurrentUser,
     setTrainer,
     loading,
-    setPokemonData,
+    setRosterData,
   } = useAuth()
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        var pokemons = []
+        var roster = []
         setCurrentUser(user)
         db.collection("users")
           .doc(user.uid)
@@ -37,17 +37,17 @@ function App() {
           .get()
           .then((snapshot) => {
             snapshot.forEach((doc) => {
-              pokemons.push({ id: doc.id, pokemonName: doc.data().pokemonName })
+              roster.push(doc.data())
               count++
             })
             // while (count < 6) {
             //   pokemons.push({ id: "empty", pokemonName: "none" })
             //   count++
             // }
-            setPokemonData(pokemons)
+            setRosterData(roster)
           })
 
-        console.log(pokemons)
+        console.log(roster)
       }
     })
     setLoading(false)

@@ -5,6 +5,7 @@ import { useAuth } from "./AuthContext"
 import db from "./firebase"
 import "./Home.css"
 import "./type.css"
+import TypeButton from "./TypeButton"
 
 export default function Home() {
   const {
@@ -12,8 +13,9 @@ export default function Home() {
     trainerName,
     setTrainer,
     currentUser,
-    loading,
     pokemons,
+    loading,
+    roster,
   } = useAuth()
   const history = useHistory()
   const [error, setError] = useState("")
@@ -59,19 +61,23 @@ export default function Home() {
 
       <div className="user__container">
         <div className="roster__container">
-          <h2>roster</h2>
+          <h2>Your Roster</h2>
           <div className="pokemon__container">
-            {pokemons.map((p) => (
-              <div key={p.id} className="pokemon__panel-card fire__type">
+            {roster.map((p, index) => (
+              <div
+                key={index}
+                className={"pokemon__panel-card " + p.type1 + "__type"}
+              >
                 <div className="pokemon__panel-sprite">
                   <img
-                    src={"/assets/sprites/" + p.pokemonName + ".gif"}
-                    alt={p.pokemonName}
+                    src={"/assets/sprites/" + p.name + ".gif"}
+                    alt={p.name}
                   />
                 </div>
                 <div className="pokemon__panel-info">
-                  <h4>{p.pokemonName}</h4>
-                  <span className="type fire">fire</span>
+                  <h4>{p.name}</h4>
+                  <p className="level">Level: {p.level}</p>
+                  <TypeButton type1={p.type1} type2={p.type2} />
                 </div>
               </div>
             ))}
@@ -101,7 +107,7 @@ export default function Home() {
           </div>
           <div className="data__container">
             <p className="parameter">No of Pokemons:</p>
-            <p className="value">1</p>
+            <p className="value">{roster.length + pokemons.length}</p>
           </div>
           <div className="data__container">
             <p className="parameter">Badges Won:</p>
