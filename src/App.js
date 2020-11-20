@@ -1,16 +1,61 @@
-import React from "react"
+import React, { useEffect } from "react"
 import Login from "./components/Login"
 import "./App.css"
-import { AuthProvider } from "./components/AuthContext"
+import { AuthProvider, useAuth } from "./components/AuthContext"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import Dashboard from "./components/Dashboard"
 import PrivateRoute from "./components/PrivateRoute"
 import Home from "./components/Home"
 // import StarterClass from "./components/StarterClass"
 import Starter from "./components/Starter"
+import db, { auth } from "./components/firebase"
 
 function App() {
-  return (
+  const {
+    setLoading,
+    setCurrentUser,
+    setTrainer,
+    loading,
+    setRosterData,
+  } = useAuth()
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        var roster = []
+        setCurrentUser(user)
+        db.collection("users")
+          .doc(user.uid)
+          .get()
+          .then((result) => {
+            if (result.exists) setTrainer(result.data()["displayName"])
+          })
+        var count = 0
+        db.collection("users")
+          .doc(user.uid)
+          .collection("roster")
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              roster.push(doc.data())
+              count++
+            })
+            // while (count < 6) {
+            //   pokemons.push({ id: "empty", pokemonName: "none" })
+            //   count++
+            // }
+            setRosterData(roster)
+          })
+
+        console.log(roster)
+      }
+    })
+    setLoading(false)
+    return unsubscribe
+  }, [])
+  return loading ? (
+    <div className="App">LOADING...</div>
+  ) : (
     <Router>
       <div className="App">
         <Switch>

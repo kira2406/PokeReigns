@@ -11,7 +11,8 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
   const [loading, setLoading] = useState(true)
-  const [pokemons, setPokemons] = useState()
+  const [pokemons, setPokemons] = useState([])
+  const [roster, setRoster] = useState([])
   const [trainerName, setTrainerName] = useState("")
 
   function login(provider) {
@@ -25,14 +26,29 @@ export function AuthProvider({ children }) {
   function setTrainer(trainerName) {
     setTrainerName(trainerName)
   }
-
   function setPokemonData(pokes) {
     setPokemons(pokes)
   }
 
+  function setRosterData(pokes) {
+    pokes.sort((a, b) => {
+      return a.pos - b.pos
+    })
+    setRoster(pokes)
+    console.log("writing" + roster)
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user)
+      if (user) {
+        setCurrentUser(user)
+        db.collection("users")
+          .doc(user.uid)
+          .get()
+          .then((result) => {
+            // setTrainer(result.data().displayName)
+          })
+      }
       setLoading(false)
     })
     return unsubscribe
@@ -40,12 +56,17 @@ export function AuthProvider({ children }) {
 
   const value = {
     currentUser,
+    setCurrentUser,
     login,
     logout,
     setTrainer,
-    trainerName,
     pokemons,
     setPokemonData,
+    trainerName,
+    roster,
+    setRosterData,
+    setLoading,
+    loading,
   }
   return (
     <AuthContext.Provider value={value}>

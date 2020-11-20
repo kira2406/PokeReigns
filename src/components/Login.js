@@ -24,7 +24,7 @@ function Login() {
           .then((pokemon) => {
             if (pokemon.exists) {
               console.log(pokemon.data())
-              setTrainer(pokemon.data().displayName)
+
               setHomeRefer(true)
             } else {
               console.log("no pokemon found")

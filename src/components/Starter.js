@@ -40,6 +40,8 @@ function Starter() {
     }
     if (!error && !perror) {
       console.log("form submitting")
+      pokemon.level = 5
+      pokemon.pos = 1
       db.collection("users")
         .doc(currentUser.uid)
         .set({
@@ -50,9 +52,7 @@ function Starter() {
           db.collection("users")
             .doc(currentUser.uid)
             .collection("roster")
-            .add({
-              pokemonName: pokemon.name,
-            })
+            .add(pokemon)
             .then((result) => {
               history.push("/")
             })
