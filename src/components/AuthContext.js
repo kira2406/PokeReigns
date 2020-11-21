@@ -14,6 +14,7 @@ export function AuthProvider({ children }) {
   const [pokemons, setPokemons] = useState([])
   const [roster, setRoster] = useState([])
   const [trainerName, setTrainerName] = useState("")
+  const [darkMode, setDarkMode] = useState(true)
 
   function login(provider) {
     return auth.signInWithPopup(provider)
@@ -67,6 +68,8 @@ export function AuthProvider({ children }) {
     setRosterData,
     setLoading,
     loading,
+    darkMode,
+    setDarkMode,
   }
   return (
     <AuthContext.Provider value={value}>

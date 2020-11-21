@@ -1,4 +1,18 @@
-import { Button } from "@material-ui/core"
+import {
+  AppBar,
+  Button,
+  Card,
+  Grid,
+  IconButton,
+  makeStyles,
+  Menu,
+  MenuItem,
+  Paper,
+  Switch,
+  Toolbar,
+  Typography,
+  useTheme,
+} from "@material-ui/core"
 import React, { useEffect, useState } from "react"
 import { NavLink, useHistory } from "react-router-dom"
 import { useAuth } from "./AuthContext"
@@ -6,8 +20,36 @@ import db from "./firebase"
 import "./Home.css"
 import "./type.css"
 import TypeButton from "./TypeButton"
-
+import MenuIcon from "@material-ui/icons/Menu"
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    textAlign: "center",
+    padding: 40,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.42), 0 1px 2px rgba(0, 0, 0, 0.44)",
+    color: theme.palette.text.primary,
+  },
+  control: {
+    padding: theme.spacing(2),
+  },
+  container: {
+    backgroundColor: theme.palette.background.default,
+    height: "100%",
+    display: "flex",
+    justifyItems: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    color: theme.palette.text.primary,
+  },
+  navbar: {
+    borderRadius: 5,
+    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)",
+    backgroundColor: theme.palette.background.paper,
+    width: "90%",
+  },
+}))
 export default function Home() {
+  const classes = useStyles()
   const {
     logout,
     trainerName,
@@ -16,9 +58,12 @@ export default function Home() {
     pokemons,
     loading,
     roster,
+    darkMode,
+    setDarkMode,
   } = useAuth()
   const history = useHistory()
   const [error, setError] = useState("")
+  // const classes = useStyles()
 
   async function handleLogout() {
     setError("")
@@ -30,35 +75,55 @@ export default function Home() {
       setError("Failed to log out")
     }
   }
+  return (
+    <div className={classes.container}>
+      <h1>Poke Reigns</h1>
+      <Grid
+        container
+        justify="space-evenly"
+        alignItems="center"
+        className={classes.navbar}
+      >
+        <Button color="primary">Home</Button>
+        <Button color="primary">Your Pokemons</Button>
+        <Button color="primary" onClick={() => history.push("/maps")}>
+          Maps
+        </Button>
+        <Button color="primary">Battle</Button>
+        <Button color="primary" onClick={handleLogout}>
+          Logout
+        </Button>
+      </Grid>
+      <Grid container width="80%">
+        <Grid item xs={12} sm={5}>
+          <div className="pokemon__container">
+            {roster.map((p, index) => (
+              <div
+                key={index}
+                className={"pokemon__panel-card " + p.type1 + "__type"}
+              >
+                <div className="pokemon__panel-sprite">
+                  <img
+                    src={"/assets/sprites/" + p.name + ".gif"}
+                    alt={p.name}
+                  />
+                </div>
+                <div className="pokemon__panel-info">
+                  <h4>{p.name}</h4>
+                  <p className="level">Level: {p.level}</p>
+                  <TypeButton type1={p.type1} type2={p.type2} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <p className="parameter">Trainer name:</p>
+          <p className="value">{trainerName ? trainerName : "LOADING"}</p>
+        </Grid>
+      </Grid>
 
-  // useEffect(() => {
-  //   if (currentUser)
-  //     db.collection("users")
-  //       .doc(currentUser.uid)
-  //       .collection("roster")
-  //       .get()
-  //       .then((snapshot) => {
-  //         snapshot.forEach((doc) => {
-  //           console.log(doc.data())
-  //         })
-  //       })
-  //       .catch((e) => console.log(e))
-  // }, [currentUser])
-
-  return loading ? (
-    <div>LOADING......</div>
-  ) : (
-    <div className="home">
-      <div className="logo__container">
-        <h2>Poke Reigns</h2>
-      </div>
-      <div className="nav__container">
-        <Button className="nav__button">Home</Button>|
-        <Button>Your Pokemon</Button>|<Button>Maps</Button>|
-        <Button>Battle</Button>|<Button>Profile</Button>|
-        <Button onClick={handleLogout}>Logout</Button>
-      </div>
-
+      {/* 
       <div className="user__container">
         <div className="roster__container">
           <h2>Your Roster</h2>
@@ -80,8 +145,8 @@ export default function Home() {
                   <TypeButton type1={p.type1} type2={p.type2} />
                 </div>
               </div>
-            ))}
-            {/* { while (true) {
+            ))} */
+      /* { while (true) {
               <div className="pokemon__panel-card fire__type">
               <div className="pokemon__panel-sprite">
                 <img src="/assets/sprites/abra.gif" alt="No pokemon" />
@@ -93,8 +158,7 @@ export default function Home() {
             </div>  
             }
             
-            } */}
-          </div>
+
         </div>
         <div className="info__container">
           <div className="data__container">
@@ -114,9 +178,7 @@ export default function Home() {
             <p className="value">0</p>
           </div>
         </div>
-      </div>
-
-      <div>{error}</div>
+      </div> */}
     </div>
   )
 }

@@ -1,11 +1,30 @@
-import { Button, TextField } from "@material-ui/core"
+import { Button, makeStyles, TextField } from "@material-ui/core"
 import React, { useEffect, useState } from "react"
 import "./Starter.css"
 import "./type.css"
 import db, { auth } from "./firebase"
 import { useHistory } from "react-router-dom"
 import { useAuth } from "./AuthContext"
-
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    textAlign: "center",
+    padding: 40,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)",
+    color: theme.palette.text.primary,
+  },
+  control: {
+    padding: theme.spacing(2),
+  },
+  container: {
+    backgroundColor: theme.palette.background.default,
+    padding: 30,
+    height: "100%",
+  },
+}))
 function Starter() {
   const [starter, setStarter] = useState(null)
   const [pokemon, setPokemon] = useState(null)
@@ -15,7 +34,7 @@ function Starter() {
   const [perror, setPerror] = useState("")
   const { currentUser, setTrainer } = useAuth()
   const history = useHistory()
-
+  const classes = useStyles()
   useEffect(() => {
     if (starter)
       db.collection("pokemondb")
@@ -70,7 +89,7 @@ function Starter() {
   }
 
   return (
-    <div className="container" id="starter">
+    <div className={classes.container}>
       <div className="starter__container">
         <h2>Welcome to PokeReigns!!</h2>
         <div className="starter__subcontainer">
