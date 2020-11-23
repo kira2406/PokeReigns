@@ -11,19 +11,18 @@ const useStyles = makeStyles(() =>
       html: {
         "-webkit-font-smoothing": "antialiased",
         "-moz-osx-font-smoothing": "grayscale",
-        height: "100%",
-        width: "100%",
+        backgroundColor: "#222",
       },
       body: {
-        height: "100%",
-        width: "100%",
+        padding: 0,
+        margin: 0,
       },
       a: {
         textDecoration: "none",
       },
       "#root": {
-        height: "100%",
-        width: "100%",
+        padding: 0,
+        margin: 0,
       },
     },
   })

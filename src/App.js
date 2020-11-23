@@ -11,6 +11,7 @@ import Starter from "./components/Starter"
 import db, { auth } from "./components/firebase"
 import MapsPage from "./components/MapsPage"
 import YourPokemon from "./components/YourPokemon"
+import "./App.css"
 import {
   ThemeProvider,
   createMuiTheme,
@@ -28,6 +29,8 @@ import {
 import { colors } from "@material-ui/core"
 import { lightTheme, darkTheme } from "./themes/themes.js"
 import GlobalStyles from "./themes/GlobalStyles"
+import Demo from "./components/demo"
+import RegionMap from "./components/RegionMap"
 
 function App() {
   const [darkMode, setDarkMode] = useState(true)
@@ -50,7 +53,7 @@ function App() {
           .then((result) => {
             if (result.exists) setTrainer(result.data()["displayName"])
           })
-        var count = 0
+        var count = 1
         db.collection("users")
           .doc(user.uid)
           .collection("roster")
@@ -60,10 +63,10 @@ function App() {
               roster.push(doc.data())
               count++
             })
-            // while (count < 6) {
-            //   pokemons.push({ id: "empty", pokemonName: "none" })
-            //   count++
-            // }
+            while (count <= 6) {
+              roster.push({ id: "empty", pokemonName: "none", pos: count })
+              count++
+            }
             setRosterData(roster)
           })
 
@@ -75,14 +78,15 @@ function App() {
   }, [])
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-      <GlobalStyles />
       <Router>
         <Switch>
           <PrivateRoute exact path="/" component={Home} />
           <PrivateRoute exact path="/starter" component={Starter} />
           <PrivateRoute exact path="/dash" component={Dashboard} />
           <PrivateRoute exact path="/maps" component={MapsPage} />
+          <PrivateRoute exact path="/maps/:map/:name" component={RegionMap} />
           <PrivateRoute exact path="/ypokemon" component={YourPokemon} />
+          <PrivateRoute exact path="/demo" component={Demo} />
           <Route path="/login" component={Login} />
         </Switch>
       </Router>

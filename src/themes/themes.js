@@ -23,10 +23,10 @@ const lightTheme = createMuiTheme({
   typography,
 })
 const darkTheme = createMuiTheme({
-  shadows: ["none"],
   palette: {
     background: {
       default: "#212121",
+      // default: colors.common.white,
       paper: "#212121",
     },
     primary: {
@@ -40,6 +40,7 @@ const darkTheme = createMuiTheme({
       secondary: colors.grey,
     },
   },
+  shadows,
   typography,
 })
 

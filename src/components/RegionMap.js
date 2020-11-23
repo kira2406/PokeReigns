@@ -54,21 +54,34 @@ const useStyles = makeStyles((theme) => ({
   content: {
     padding: 20,
   },
+  map_container: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-evenly",
+    flexDirection: "row",
+    padding: 10,
+  },
   pokemon_container: {
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "space-evenly",
+  },
+  pokemon__panel_sprite: {
+    height: 50,
+    flex: 1,
+    textAlign: "center",
+    justifyContent: "center",
+    alignContent: "center",
   },
   pokemon_panel: {
     fontSize: 10,
     display: "flex",
     padding: 20,
     borderRadius: 5,
-    flexDirection: "row",
     cursor: "pointer",
-    flex: "0 0 200",
     margin: 10,
-    width: "50%",
+    justifyContent: "center",
+    alignContent: "center",
   },
   cover: {
     width: 151,
@@ -80,13 +93,17 @@ const useStyles = makeStyles((theme) => ({
   },
   map__image: {
     width: "100%",
-    height: 100,
+    height: 50,
   },
   map_cards_container: {
     padding: 30,
   },
+  map__display: {
+    borderRadius: 5,
+    cursor: "pointer",
+  },
 }))
-export default function MapsPage() {
+export default function RegionMap({ match }) {
   const classes = useStyles()
   const history = useHistory()
   const {
@@ -111,6 +128,7 @@ export default function MapsPage() {
       setError("Failed to log out")
     }
   }
+
   return (
     <div className={classes.container}>
       <h1 className={classes.title}>Poke Reigns</h1>
@@ -133,52 +151,7 @@ export default function MapsPage() {
       </div>
       <div className={classes.content}>
         <Grid container spacing={5}>
-          <Grid item xs={12} sm={5}>
-            <Paper className={classes.paper}>
-              <p>Your Roster</p>
-              <Grid container className={classes.pokemon_container}>
-                {roster.map((p, index) =>
-                  p.name ? (
-                    <Grid
-                      item
-                      key={p.pos}
-                      className={
-                        classes.pokemon_panel + " " + p.type1 + "__type"
-                      }
-                      sm={5}
-                    >
-                      <div className="pokemon__panel-sprite ">
-                        <img
-                          src={"/assets/sprites/" + p.name + ".gif"}
-                          alt={p.name}
-                        />
-                      </div>
-                      <div className="pokemon__panel-info">
-                        <h4>{p.name}</h4>
-                        <p className="level">Level: {p.level}</p>
-                        <TypeButton type1={p.type1} type2={p.type2} />
-                      </div>
-                    </Grid>
-                  ) : (
-                    <Grid
-                      item
-                      key={p.pos}
-                      className={classes.pokemon_panel + " none__type"}
-                      sm={5}
-                    >
-                      <div className="pokemon__panel-sprite">None</div>
-                      <div className="pokemon__panel-info">
-                        <h4>{p.name}</h4>
-                        <p className="level">Level: {p.level}</p>
-                        <TypeButton type1={p.type1} type2={p.type2} />
-                      </div>
-                    </Grid>
-                  )
-                )}
-              </Grid>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={7}>
+          <Grid item xs={12} sm={2}>
             <Paper className={classes.paper}>
               <h2>Choose a map</h2>
               <Grid
@@ -200,8 +173,11 @@ export default function MapsPage() {
                   ["marshlands", "Swamps"],
                   ["icelands", "Antarctica"],
                 ].map((map) => (
-                  <Grid item xs={12} sm={6} key={map[0]}>
-                    <Link to={`/maps/${map[0]}/${map[1]}`}>
+                  <Grid item xs={12} sm={12} key={map[0]}>
+                    <Link
+                      to={`/maps/${map[0]}/${map[1]}`}
+                      onClick={() => window.scrollTo(0, 0)}
+                    >
                       <Card className={classes.map__card} variant="outlined">
                         <CardActionArea>
                           <CardMedia
@@ -209,20 +185,61 @@ export default function MapsPage() {
                             className={classes.map__image}
                             image={"/assets/maps/" + map[0] + ".png"}
                           />
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="h2"
-                            >
-                              {map[1]}
-                            </Typography>
-                          </CardContent>
+                          <CardContent>{map[1]}</CardContent>
                         </CardActionArea>
                       </Card>
                     </Link>
                   </Grid>
                 ))}
+              </Grid>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={8}>
+            <Paper className={classes.paper}>
+              <h2>{match.params.name}</h2>
+              <Grid container className={classes.map_container}>
+                <img
+                  src={"/assets/maps/" + match.params.map + ".png"}
+                  onClick={() => console.log(Math.random())}
+                  className={classes.map__display}
+                />
+                Click anywhere on the map to search for a pokemon!
+              </Grid>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={2}>
+            <Paper className={classes.paper}>
+              <p>Your Roster</p>
+              <Grid container className={classes.pokemon_container}>
+                {roster.map((p, index) =>
+                  p.name ? (
+                    <Grid
+                      item
+                      key={p.pos}
+                      className={
+                        classes.pokemon_panel + " " + p.type1 + "__type"
+                      }
+                      sm={6}
+                    >
+                      <div className="pokemon__panel_sprite">
+                        <img
+                          src={"/assets/sprites/" + p.name + ".gif"}
+                          alt={p.name}
+                        />
+                        Ready!
+                      </div>
+                    </Grid>
+                  ) : (
+                    <Grid
+                      item
+                      key={p.pos}
+                      className={classes.pokemon_panel + " none__type"}
+                      sm={6}
+                    >
+                      <div className="pokemon__panel-sprite">None</div>
+                    </Grid>
+                  )
+                )}
               </Grid>
             </Paper>
           </Grid>
