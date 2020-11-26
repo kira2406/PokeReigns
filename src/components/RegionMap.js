@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "space-evenly",
-    flexDirection: "row",
+    flexDirection: "column",
     padding: 10,
   },
   pokemon_container: {
@@ -102,6 +102,22 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 5,
     cursor: "pointer",
   },
+  wild_container: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  wild_encounter_success: {
+    padding: 10,
+    marginBottom: 10,
+    backgroundColor: "green",
+  },
+  wild_encounter_fail: {
+    padding: 10,
+    marginBottom: 10,
+    backgroundColor: "red",
+  },
 }))
 export default function RegionMap({ match }) {
   const classes = useStyles()
@@ -118,6 +134,8 @@ export default function RegionMap({ match }) {
     setDarkMode,
   } = useAuth()
   const [error, setError] = useState("")
+  const [appear, setAppear] = useState(false)
+  const [attempt, setAttempt] = useState(false)
   async function handleLogout() {
     setError("")
 
@@ -176,7 +194,10 @@ export default function RegionMap({ match }) {
                   <Grid item xs={12} sm={12} key={map[0]}>
                     <Link
                       to={`/maps/${map[0]}/${map[1]}`}
-                      onClick={() => window.scrollTo(0, 0)}
+                      onClick={() => {
+                        setAttempt(false)
+                        window.scrollTo(0, 0)
+                      }}
                     >
                       <Card className={classes.map__card} variant="outlined">
                         <CardActionArea>
@@ -198,12 +219,37 @@ export default function RegionMap({ match }) {
             <Paper className={classes.paper}>
               <h2>{match.params.name}</h2>
               <Grid container className={classes.map_container}>
-                <img
-                  src={"/assets/maps/" + match.params.map + ".png"}
-                  onClick={() => console.log(Math.random())}
-                  className={classes.map__display}
-                />
-                Click anywhere on the map to search for a pokemon!
+                <div className={classes.wild_container}>
+                  <div>
+                    {attempt ? (
+                      appear ? (
+                        <Paper className={classes.wild_encounter_success}>
+                          Appeared
+                        </Paper>
+                      ) : (
+                        <Paper className={classes.wild_encounter_fail}>
+                          Sorry, no pokemon appeared
+                        </Paper>
+                      )
+                    ) : null}
+                  </div>
+                  <div>
+                    <img
+                      width="500"
+                      src={"/assets/maps/" + match.params.map + ".png"}
+                      onClick={() => {
+                        setAttempt(true)
+                        if (Math.random() <= 0.5) {
+                          setAppear(true)
+                        } else {
+                          setAppear(false)
+                        }
+                      }}
+                      className={classes.map__display}
+                    />
+                  </div>
+                  <div>Click anywhere on the map to search for a pokemon!</div>
+                </div>
               </Grid>
             </Paper>
           </Grid>
