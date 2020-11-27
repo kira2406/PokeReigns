@@ -5,6 +5,7 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  CircularProgress,
   Grid,
   makeStyles,
   Paper,
@@ -18,6 +19,8 @@ import TypeButton from "./TypeButton"
 import PCard from "../themes/PokemonCards"
 import "./Home.css"
 import "./type.css"
+import db from "./firebase"
+import { Alert } from "@material-ui/lab"
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -109,14 +112,19 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   wild_encounter_success: {
-    padding: 10,
+    padding: 5,
     marginBottom: 10,
     backgroundColor: "green",
+    width: "200",
   },
   wild_encounter_fail: {
     padding: 10,
     marginBottom: 10,
-    backgroundColor: "red",
+  },
+  catch_link: {
+    textDecoration: "none",
+    fontSize: 15,
+    color: "green",
   },
 }))
 export default function RegionMap({ match }) {
@@ -136,6 +144,38 @@ export default function RegionMap({ match }) {
   const [error, setError] = useState("")
   const [appear, setAppear] = useState(false)
   const [attempt, setAttempt] = useState(false)
+  const [appearedPokemon, setAppearedPokemon] = useState(null)
+  const [pokemonLoading, setPokemonLoading] = useState(false)
+  async function catchPokemon() {
+    var choices = [
+      "115",
+      "13",
+      "316",
+      "216",
+      "327",
+      "406",
+      "511",
+      "69",
+      "10",
+      "204",
+    ]
+    setAttempt(true)
+    setPokemonLoading(true)
+    if (Math.random() <= 0.4) {
+      setAppear(true)
+      await db
+        .collection("pokemondb")
+        .doc(choices[Math.floor(Math.random() * choices.length)])
+        .get()
+        .then((result) => {
+          setAppearedPokemon(result.data())
+        })
+        .catch((e) => console.log("pokemon could not be fetched"))
+      setPokemonLoading(false)
+    } else {
+      setAppear(false)
+    }
+  }
   async function handleLogout() {
     setError("")
 
@@ -218,17 +258,52 @@ export default function RegionMap({ match }) {
           <Grid item xs={12} sm={8}>
             <Paper className={classes.paper}>
               <h2>{match.params.name}</h2>
-              <Grid container className={classes.map_container}>
+              <Grid container className={classes.map_container} spacing={2}>
                 <div className={classes.wild_container}>
                   <div>
                     {attempt ? (
                       appear ? (
                         <Paper className={classes.wild_encounter_success}>
-                          Appeared
+                          {pokemonLoading ? (
+                            <CircularProgress />
+                          ) : (
+                            <Paper>
+                              <Grid container direction={"column"}>
+                                <Grid item>A wild pokemon has appeared !</Grid>
+                                <Grid item className={classes.pokemon_panel}>
+                                  <Grid container direction={"row"}>
+                                    <Grid item xs={6}>
+                                      <img
+                                        src={
+                                          "/assets/sprites/" +
+                                          appearedPokemon.name +
+                                          ".gif"
+                                        }
+                                        width={"45"}
+                                      />
+                                      <p>{appearedPokemon.name}</p>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                      <TypeButton
+                                        type1={appearedPokemon.type1}
+                                        type2={appearedPokemon.type2}
+                                      />
+                                      <p>Level:5</p>
+                                      <Link className={classes.catch_link}>
+                                        Catch Pokemon!
+                                      </Link>
+                                    </Grid>
+                                  </Grid>
+                                </Grid>
+                              </Grid>
+                            </Paper>
+                          )}
                         </Paper>
                       ) : (
                         <Paper className={classes.wild_encounter_fail}>
-                          Sorry, no pokemon appeared
+                          <Alert variant="filled" severity="error">
+                            Sorry, no pokemon appeared
+                          </Alert>
                         </Paper>
                       )
                     ) : null}
@@ -237,15 +312,9 @@ export default function RegionMap({ match }) {
                     <img
                       width="500"
                       src={"/assets/maps/" + match.params.map + ".png"}
-                      onClick={() => {
-                        setAttempt(true)
-                        if (Math.random() <= 0.5) {
-                          setAppear(true)
-                        } else {
-                          setAppear(false)
-                        }
-                      }}
+                      onClick={catchPokemon}
                       className={classes.map__display}
+                      alt={"map" + match.params.map}
                     />
                   </div>
                   <div>Click anywhere on the map to search for a pokemon!</div>
