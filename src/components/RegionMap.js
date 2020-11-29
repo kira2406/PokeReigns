@@ -12,7 +12,7 @@ import {
   Toolbar,
   Typography,
 } from "@material-ui/core"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Link, useHistory } from "react-router-dom"
 import { useAuth } from "./AuthContext"
 import TypeButton from "./TypeButton"
@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
     height: 50,
     flex: 1,
     textAlign: "center",
-    justifyContent: "center",
+    justify: "center",
     alignContent: "center",
   },
   pokemon_panel: {
@@ -85,6 +85,8 @@ const useStyles = makeStyles((theme) => ({
     margin: 10,
     justifyContent: "center",
     alignContent: "center",
+    justify: "center",
+    alignItems: "center",
   },
   cover: {
     width: 151,
@@ -108,13 +110,13 @@ const useStyles = makeStyles((theme) => ({
   wild_container: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    justify: "center",
     alignItems: "center",
   },
   wild_encounter_success: {
     padding: 5,
     marginBottom: 10,
-    backgroundColor: "green",
+
     width: "200",
   },
   wild_encounter_fail: {
@@ -124,7 +126,16 @@ const useStyles = makeStyles((theme) => ({
   catch_link: {
     textDecoration: "none",
     fontSize: 15,
-    color: "green",
+    color: "black",
+  },
+  appeared_message: {
+    justify: "center",
+    alignItems: "center",
+    textAlign: "center",
+  },
+  capture_button: {
+    backgroundColor: "#1b5e20",
+    width: 100,
   },
 }))
 export default function RegionMap({ match }) {
@@ -145,32 +156,46 @@ export default function RegionMap({ match }) {
   const [appear, setAppear] = useState(false)
   const [attempt, setAttempt] = useState(false)
   const [appearedPokemon, setAppearedPokemon] = useState(null)
+  const [presentPokemon, setPresentPokemon] = useState({})
   const [pokemonLoading, setPokemonLoading] = useState(false)
+  var choices = [
+    "115",
+    "13",
+    "316",
+    "216",
+    "327",
+    "406",
+    "511",
+    "69",
+    "10",
+    "204",
+  ]
+  useEffect(() => {
+    var i = 0
+    while (i < choices.length) {
+      db.collection("pokemondb")
+        .doc(choices[i])
+        .get()
+        .then((result) => {
+          // appearedPokemon.add([choices[i], result.data()])
+          // appearedPokemon[choices[i]] = result.data()
+
+          presentPokemon[result.id] = result.data()
+          // console.log(appearedPokemon[result.id].name + "in loop")
+        })
+        .catch((e) => console.log("pokemon could not be fetched"))
+      i++
+    }
+  }, [])
   async function catchPokemon() {
-    var choices = [
-      "115",
-      "13",
-      "316",
-      "216",
-      "327",
-      "406",
-      "511",
-      "69",
-      "10",
-      "204",
-    ]
     setAttempt(true)
     setPokemonLoading(true)
     if (Math.random() <= 0.4) {
       setAppear(true)
-      await db
-        .collection("pokemondb")
-        .doc(choices[Math.floor(Math.random() * choices.length)])
-        .get()
-        .then((result) => {
-          setAppearedPokemon(result.data())
-        })
-        .catch((e) => console.log("pokemon could not be fetched"))
+
+      setAppearedPokemon(
+        presentPokemon[choices[Math.floor(Math.random() * choices.length)]]
+      )
       setPokemonLoading(false)
     } else {
       setAppear(false)
@@ -267,36 +292,50 @@ export default function RegionMap({ match }) {
                           {pokemonLoading ? (
                             <CircularProgress />
                           ) : (
-                            <Paper>
+                            <Alert
+                              icon={false}
+                              variant="filled"
+                              severity="success"
+                            >
                               <Grid container direction={"column"}>
-                                <Grid item>A wild pokemon has appeared !</Grid>
+                                <Grid item className={classes.appeared_message}>
+                                  <p>A wild pokemon has appeared !</p>
+                                </Grid>
+
                                 <Grid item className={classes.pokemon_panel}>
                                   <Grid container direction={"row"}>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={4}>
                                       <img
                                         src={
                                           "/assets/sprites/" +
                                           appearedPokemon.name +
                                           ".gif"
                                         }
+                                        alt={appearedPokemon.name}
                                         width={"45"}
                                       />
                                       <p>{appearedPokemon.name}</p>
                                     </Grid>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={4}>
                                       <TypeButton
                                         type1={appearedPokemon.type1}
                                         type2={appearedPokemon.type2}
                                       />
                                       <p>Level:5</p>
-                                      <Link className={classes.catch_link}>
-                                        Catch Pokemon!
-                                      </Link>
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                      <Button
+                                        width={"100"}
+                                        className={classes.capture_button}
+                                        size="small"
+                                      >
+                                        Catch pokemon !
+                                      </Button>
                                     </Grid>
                                   </Grid>
                                 </Grid>
                               </Grid>
-                            </Paper>
+                            </Alert>
                           )}
                         </Paper>
                       ) : (
