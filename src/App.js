@@ -38,8 +38,8 @@ function App() {
     setLoading,
     setCurrentUser,
     setTrainer,
-    loading,
     setRosterData,
+    moves,
   } = useAuth()
 
   useEffect(() => {
@@ -60,20 +60,23 @@ function App() {
           .get()
           .then((snapshot) => {
             snapshot.forEach((doc) => {
-              roster.push(doc.data())
+              roster.push({ id: doc.id, data: doc.data() })
               count++
             })
             while (count <= 6) {
-              roster.push({ id: "empty", pokemonName: "none", pos: count })
+              roster.push({
+                id: "empty",
+                data: { pokemonName: "none", pos: count },
+              })
               count++
             }
             setRosterData(roster)
+            console.log(roster)
+            setLoading(false)
           })
-
-        console.log(roster)
       }
     })
-    setLoading(false)
+
     return unsubscribe
   }, [])
   return (
@@ -85,7 +88,7 @@ function App() {
           <PrivateRoute exact path="/dash" component={Dashboard} />
           <PrivateRoute exact path="/maps" component={MapsPage} />
           <PrivateRoute exact path="/maps/:map/:name" component={RegionMap} />
-          <PrivateRoute exact path="/ypokemon" component={YourPokemon} />
+          <PrivateRoute exact path="/pokemon" component={YourPokemon} />
           <PrivateRoute exact path="/demo" component={Demo} />
           <Route path="/login" component={Login} />
         </Switch>

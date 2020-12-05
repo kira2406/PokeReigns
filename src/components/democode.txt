@@ -1,0 +1,25 @@
+pokemon.data.move1 && console.log(pokemon.data.move1)
+          pokemon.data.move1 &&
+            db
+              .collection("moves")
+              .doc(pokemon.data.move1)
+              .get()
+              .then((move) => (rosterMoves[pokemon.id]["move1"] = move.data()))
+          pokemon.data.move2 &&
+            db
+              .collection("moves")
+              .doc(pokemon.data.move2)
+              .get()
+              .then((move) => (rosterMoves[pokemon.id]["move2"] = move.data()))
+          pokemon.data.move3 &&
+            db
+              .collection("moves")
+              .doc(pokemon.data.move3)
+              .get()
+              .then((move) => (rosterMoves[pokemon.id]["move3"] = move.data()))
+          pokemon.data.move4 &&
+            db
+              .collection("moves")
+              .doc(pokemon.data.move4)
+              .get()
+              .then((move) => (rosterMoves[pokemon.id]["move4"] = move.data()))

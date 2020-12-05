@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.default,
     padding: 30,
     height: "100%",
+    minHeight: "100vh",
   },
 }))
 function Login() {

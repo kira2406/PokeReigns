@@ -12,6 +12,7 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
   const [loading, setLoading] = useState(true)
   const [pokemons, setPokemons] = useState([])
+  const [moves, setMoves] = useState([])
   const [roster, setRoster] = useState([])
   const [trainerName, setTrainerName] = useState("")
   const [darkMode, setDarkMode] = useState(true)
@@ -70,6 +71,7 @@ export function AuthProvider({ children }) {
     loading,
     darkMode,
     setDarkMode,
+    moves,
   }
   return (
     <AuthContext.Provider value={value}>

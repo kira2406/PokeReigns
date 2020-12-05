@@ -1,4 +1,4 @@
-import { Button, makeStyles, TextField } from "@material-ui/core"
+import { Button, colors, makeStyles, TextField } from "@material-ui/core"
 import React, { useEffect, useState } from "react"
 import "./Starter.css"
 import "./type.css"
@@ -8,11 +8,12 @@ import { useAuth } from "./AuthContext"
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    color: colors.common.white,
   },
   paper: {
     textAlign: "center",
     padding: 40,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.default,
     boxShadow: "0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)",
     color: theme.palette.text.primary,
   },
@@ -21,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     backgroundColor: theme.palette.background.default,
+    color: theme.palette.text.primary,
     padding: 30,
     height: "100%",
   },
@@ -36,7 +38,7 @@ function Starter() {
   const history = useHistory()
   const classes = useStyles()
   useEffect(() => {
-    if (starter)
+    if (starter) {
       db.collection("pokemondb")
         .doc(starter)
         .get()
@@ -45,6 +47,15 @@ function Starter() {
           setPerror("")
         })
         .catch((error) => console.log(error))
+      db.collection("pokemon_moves")
+        .doc(starter)
+        .get()
+        .then((moves) => {
+          console.log(JSON.parse(moves.data()["0"]))
+          setPerror("")
+        })
+        .catch((error) => console.log(error))
+    }
   }, [starter])
 
   //handleSubmit
@@ -61,6 +72,11 @@ function Starter() {
       console.log("form submitting")
       pokemon.level = 5
       pokemon.pos = 1
+      pokemon.pid = starter
+      pokemon.move1 = "33"
+      pokemon.move2 = "45"
+      pokemon.move3 = "null"
+      pokemon.move4 = "null"
       db.collection("users")
         .doc(currentUser.uid)
         .set({

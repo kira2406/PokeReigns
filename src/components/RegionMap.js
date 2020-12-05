@@ -21,6 +21,7 @@ import "./Home.css"
 import "./type.css"
 import db from "./firebase"
 import { Alert } from "@material-ui/lab"
+import CatchPokemon from "./CatchPokemon"
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -158,6 +159,7 @@ export default function RegionMap({ match }) {
   const [appearedPokemon, setAppearedPokemon] = useState(null)
   const [presentPokemon, setPresentPokemon] = useState({})
   const [pokemonLoading, setPokemonLoading] = useState(false)
+  const [openBattle, setOpenBattle] = useState(false)
   var choices = [
     "115",
     "13",
@@ -221,7 +223,9 @@ export default function RegionMap({ match }) {
             <Button color="primary" onClick={() => history.push("/")}>
               Home
             </Button>
-            <Button color="primary">Your Pokemons</Button>
+            <Button color="primary" onClick={() => history.push("/pokemon")}>
+              Your Pokemons
+            </Button>
             <Button color="primary" onClick={() => history.push("/maps")}>
               Maps
             </Button>
@@ -281,85 +285,94 @@ export default function RegionMap({ match }) {
             </Paper>
           </Grid>
           <Grid item xs={12} sm={8}>
-            <Paper className={classes.paper}>
-              <h2>{match.params.name}</h2>
-              <Grid container className={classes.map_container} spacing={2}>
-                <div className={classes.wild_container}>
-                  <div>
-                    {attempt ? (
-                      appear ? (
-                        <Paper className={classes.wild_encounter_success}>
-                          {pokemonLoading ? (
-                            <CircularProgress />
-                          ) : (
-                            <Alert
-                              icon={false}
-                              variant="filled"
-                              severity="success"
-                            >
-                              <Grid container direction={"column"}>
-                                <Grid item className={classes.appeared_message}>
-                                  <p>A wild pokemon has appeared !</p>
-                                </Grid>
+            {openBattle ? (
+              <CatchPokemon />
+            ) : (
+              <Paper className={classes.paper}>
+                <h2>{match.params.name}</h2>
+                <Grid container className={classes.map_container} spacing={2}>
+                  <div className={classes.wild_container}>
+                    <div>
+                      {attempt ? (
+                        appear ? (
+                          <Paper className={classes.wild_encounter_success}>
+                            {pokemonLoading ? (
+                              <CircularProgress />
+                            ) : (
+                              <Alert
+                                icon={false}
+                                variant="filled"
+                                severity="success"
+                              >
+                                <Grid container direction={"column"}>
+                                  <Grid
+                                    item
+                                    className={classes.appeared_message}
+                                  >
+                                    <p>A wild pokemon has appeared !</p>
+                                  </Grid>
 
-                                <Grid item className={classes.pokemon_panel}>
-                                  <Grid container direction={"row"}>
-                                    <Grid item xs={4}>
-                                      <img
-                                        src={
-                                          "/assets/sprites/" +
-                                          appearedPokemon.name +
-                                          ".gif"
-                                        }
-                                        alt={appearedPokemon.name}
-                                        width={"45"}
-                                      />
-                                      <p>{appearedPokemon.name}</p>
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                      <TypeButton
-                                        type1={appearedPokemon.type1}
-                                        type2={appearedPokemon.type2}
-                                      />
-                                      <p>Level:5</p>
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                      <Button
-                                        width={"100"}
-                                        className={classes.capture_button}
-                                        size="small"
-                                      >
-                                        Catch pokemon !
-                                      </Button>
+                                  <Grid item className={classes.pokemon_panel}>
+                                    <Grid container direction={"row"}>
+                                      <Grid item xs={4}>
+                                        <img
+                                          src={
+                                            "/assets/sprites/" +
+                                            appearedPokemon.name +
+                                            ".gif"
+                                          }
+                                          alt={appearedPokemon.name}
+                                          width={"45"}
+                                        />
+                                        <p>{appearedPokemon.name}</p>
+                                      </Grid>
+                                      <Grid item xs={4}>
+                                        <TypeButton
+                                          type1={appearedPokemon.type1}
+                                          type2={appearedPokemon.type2}
+                                        />
+                                        <p>Level:5</p>
+                                      </Grid>
+                                      <Grid item xs={4}>
+                                        <Button
+                                          width={"100"}
+                                          className={classes.capture_button}
+                                          size="small"
+                                        >
+                                          Catch pokemon !
+                                        </Button>
+                                      </Grid>
                                     </Grid>
                                   </Grid>
                                 </Grid>
-                              </Grid>
+                              </Alert>
+                            )}
+                          </Paper>
+                        ) : (
+                          <Paper className={classes.wild_encounter_fail}>
+                            <Alert variant="filled" severity="error">
+                              Sorry, no pokemon appeared
                             </Alert>
-                          )}
-                        </Paper>
-                      ) : (
-                        <Paper className={classes.wild_encounter_fail}>
-                          <Alert variant="filled" severity="error">
-                            Sorry, no pokemon appeared
-                          </Alert>
-                        </Paper>
-                      )
-                    ) : null}
+                          </Paper>
+                        )
+                      ) : null}
+                    </div>
+                    <div>
+                      <img
+                        width="500"
+                        src={"/assets/maps/" + match.params.map + ".png"}
+                        onClick={catchPokemon}
+                        className={classes.map__display}
+                        alt={"map" + match.params.map}
+                      />
+                    </div>
+                    <div>
+                      Click anywhere on the map to search for a pokemon!
+                    </div>
                   </div>
-                  <div>
-                    <img
-                      width="500"
-                      src={"/assets/maps/" + match.params.map + ".png"}
-                      onClick={catchPokemon}
-                      className={classes.map__display}
-                      alt={"map" + match.params.map}
-                    />
-                  </div>
-                  <div>Click anywhere on the map to search for a pokemon!</div>
-                </div>
-              </Grid>
-            </Paper>
+                </Grid>
+              </Paper>
+            )}
           </Grid>
           <Grid item xs={12} sm={2}>
             <Paper className={classes.paper}>

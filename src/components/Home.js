@@ -169,8 +169,12 @@ export default function Home() {
       <div>
         <Grid container justify="space-evenly" alignItems="center">
           <Paper className={classes.navbar}>
-            <Button color="primary">Home</Button>
-            <Button color="primary">Your Pokemons</Button>
+            <Button color="primary" onClick={() => history.push("/")}>
+              Home
+            </Button>
+            <Button color="primary" onClick={() => history.push("/pokemon")}>
+              Your Pokemons
+            </Button>
             <Button color="primary" onClick={() => history.push("/maps")}>
               Maps
             </Button>
@@ -188,31 +192,31 @@ export default function Home() {
               <h2>Your Roster</h2>
               <Grid container className={classes.pokemon_container}>
                 {roster.map((p, index) =>
-                  p.name ? (
+                  p.data["name"] ? (
                     <Grid
                       item
-                      key={p.pos}
+                      key={p.data.pos}
                       className={
-                        classes.pokemon_panel + " " + p.type1 + "__type"
+                        classes.pokemon_panel + " " + p.data.type1 + "__type"
                       }
                       sm={5}
                     >
                       <div className="pokemon__panel-sprite ">
                         <img
-                          src={"/assets/sprites/" + p.name + ".gif"}
-                          alt={p.name}
+                          src={"/assets/sprites/" + p.data.name + ".gif"}
+                          alt={p.data.name}
                         />
                       </div>
                       <div className="pokemon__panel-info">
-                        <h4>{p.name}</h4>
-                        <p className="level">Level: {p.level}</p>
-                        <TypeButton type1={p.type1} type2={p.type2} />
+                        <h4>{p.data.name}</h4>
+                        <p className="level">Level: {p.data.level}</p>
+                        <TypeButton type1={p.data.type1} type2={p.data.type2} />
                       </div>
                     </Grid>
                   ) : (
                     <Grid
                       item
-                      key={p.pos}
+                      key={p.data.pos}
                       className={classes.pokemon_panel + " none__type"}
                       sm={5}
                     >
