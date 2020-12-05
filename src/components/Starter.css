@@ -6,7 +6,7 @@
   height: auto;
   /* background-color: blueviolet; */
   padding-bottom: 40px;
-  color: #333;
+  color: rgb(255, 255, 255);
   display: flex;
   margin: 20px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -76,18 +76,7 @@
   height: 75px;
   justify-items: flex-end;
 }
-.grass__type:hover {
-  box-shadow: 0 1px 3px rgba(43, 255, 24, 0.808),
-    0 1px 2px rgba(43, 255, 24, 0.829);
-}
-.fire__type:hover {
-  box-shadow: 0 1px 3px rgba(255, 78, 24, 0.808),
-    0 1px 2px rgba(255, 78, 24, 0.829);
-}
-.water__type:hover {
-  box-shadow: 0 1px 3px rgba(24, 86, 255, 0.808),
-    0 1px 2px rgba(24, 86, 255, 0.829);
-}
+
 .start__button {
   margin-top: 50px !important;
   background-color: #2196f3 !important;

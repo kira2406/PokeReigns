@@ -2,34 +2,31 @@ import {
   AppBar,
   Button,
   Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
   Grid,
-  IconButton,
   makeStyles,
-  Menu,
-  MenuItem,
   Paper,
-  Switch,
   Toolbar,
   Typography,
-  useTheme,
 } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
-import { NavLink, useHistory } from "react-router-dom"
+import React, { useState } from "react"
+import { Link, useHistory } from "react-router-dom"
 import { useAuth } from "./AuthContext"
-import db from "./firebase"
+import TypeButton from "./TypeButton"
+import PCard from "../themes/PokemonCards"
 import "./Home.css"
 import "./type.css"
-import TypeButton from "./TypeButton"
-import MenuIcon from "@material-ui/icons/Menu"
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
   paper: {
     textAlign: "center",
-    padding: 30,
+    padding: 10,
     backgroundColor: theme.palette.background.paper,
-    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.42), 0 1px 2px rgba(0, 0, 0, 0.44)",
+    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.30), 0 1px 2px rgba(0, 0, 0, 0.30)",
     color: theme.palette.text.primary,
   },
   control: {
@@ -49,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
   navbar: {
     borderRadius: 5,
-    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.42), 0 1px 2px rgba(0, 0, 0, 0.44)",
+    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.30), 0 1px 2px rgba(0, 0, 0, 0.30)",
     backgroundColor: theme.palette.background.paper,
     width: "90%",
     textAlign: "center",
@@ -63,81 +60,35 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-evenly",
   },
   pokemon_panel: {
+    fontSize: 10,
     display: "flex",
     padding: 20,
     borderRadius: 5,
     flexDirection: "row",
-
     cursor: "pointer",
     flex: "0 0 200",
     margin: 10,
     width: "50%",
   },
+  cover: {
+    width: 151,
+  },
+  map__card: {
+    color: theme.palette.text.primary,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.22), 0 1px 2px rgba(0, 0, 0, 0.24)",
+  },
+  map__image: {
+    width: "100%",
+    height: 100,
+  },
+  map_cards_container: {
+    padding: 30,
+  },
 }))
-// const useStyles = makeStyles((theme) => ({
-//   title: {
-//     fontSize: 40,
-//     textAlign: "center",
-//     fontFamily: "Montserrat",
-//   },
-//   paper: {
-//     textAlign: "center",
-//     padding: 40,
-//     backgroundColor: theme.palette.background.paper,
-//     boxShadow: "0 1px 3px rgba(0, 0, 0, 0.42), 0 1px 2px rgba(0, 0, 0, 0.44)",
-//     color: theme.palette.text.primary,
-//   },
-//   control: {
-//     padding: theme.spacing(2),
-//   },
-//   container2: {
-//     backgroundColor: "#000",
-//     padding: 20,
-//   },
-//   paper2: {
-//     textAlign: "center",
-//     color: theme.palette.text.secondary,
-//     padding: 20,
-//   },
-//   roster_container: {
-//     color: theme.palette.text.primary,
-//     backgroundColor: theme.palette.background.paper,
-//     boxShadow: "0 1px 3px rgba(0, 0, 0, 0.42), 0 1px 2px rgba(0, 0, 0, 0.44)",
-//     borderRadius: 5,
-//   },
-//   pokemon_container: {
-//     display: "flex",
-//     flexWrap: "wrap",
-//     padding: 10,
-//     justifyContent: "space-evenly",
-//   },
-//   info_container: {
-//     color: theme.palette.text.primary,
-//     backgroundColor: theme.palette.background.paper,
-//     boxShadow: "0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)",
-//     borderRadius: 5,
-//     padding: 30,
-//     textAlign: "center",
-//   },
-//
-//   pokemon_panel: {
-//     display: "flex",
-//     padding: 20,
-//     borderRadius: 5,
-//     flexDirection: "row",
-//     boxShadow: "0 1px 3px rgba(0, 0, 0, 0.32), 0 1px 2px rgba(0, 0, 0, 0.34)",
-//     cursor: "pointer",
-//     flex: "0 0 200",
-//     margin: 10,
-//     width: "50%",
-//   },
-//   fire__type: {
-//     boxShadow:
-//       "0 1px 3px rgba(255, 78, 24, 0.808),0 1px 2px rgba(255, 78, 24, 0.829)",
-//   },
-// }))
-export default function Home() {
+export default function MapsPage() {
   const classes = useStyles()
+  const history = useHistory()
   const {
     logout,
     trainerName,
@@ -149,10 +100,7 @@ export default function Home() {
     darkMode,
     setDarkMode,
   } = useAuth()
-  const history = useHistory()
   const [error, setError] = useState("")
-  // const classes = useStyles()
-
   async function handleLogout() {
     setError("")
 
@@ -187,12 +135,12 @@ export default function Home() {
       </div>
       <div className={classes.content}>
         <Grid container spacing={5}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={5}>
             <Paper className={classes.paper}>
-              <h2>Your Roster</h2>
+              <p>Your Roster</p>
               <Grid container className={classes.pokemon_container}>
                 {roster.map((p, index) =>
-                  p.data["name"] ? (
+                  p.data.name ? (
                     <Grid
                       item
                       key={p.data.pos}
@@ -216,7 +164,7 @@ export default function Home() {
                   ) : (
                     <Grid
                       item
-                      key={p.data.pos}
+                      key={p.pos}
                       className={classes.pokemon_panel + " none__type"}
                       sm={5}
                     >
@@ -232,28 +180,52 @@ export default function Home() {
               </Grid>
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={7}>
             <Paper className={classes.paper}>
-              <p className="parameter">
-                Trainer name:
-                <span className="value">
-                  {trainerName ? trainerName : "LOADING"}
-                </span>
-              </p>
-              <p className="parameter">
-                Trainer ID:
-                <span className="value">85985675</span>
-              </p>
-              <p className="parameter">
-                No of Pokemons:
-                <span className="value">
-                  {roster ? roster.length : "LOADING"}
-                </span>
-              </p>
-              <p className="parameter">
-                Badges:
-                <span className="value">0</span>
-              </p>
+              <h2>Choose a map</h2>
+              <Grid
+                container
+                spacing={4}
+                className={classes.map_cards_container}
+              >
+                {[
+                  ["grasslands", "Grasslands"],
+                  ["forestlands", "Turahalli Forest"],
+                  ["rocklands", "BarrenLands"],
+                  ["islands", "Islands"],
+                  ["caves", "Rocky Caves"],
+                  ["ruins", "Ruins"],
+                  ["powerplant", "Powerplant"],
+
+                  ["magmalands", "Mount Yelmer"],
+
+                  ["marshlands", "Swamps"],
+                  ["icelands", "Antarctica"],
+                ].map((map) => (
+                  <Grid item xs={12} sm={6} key={map[0]}>
+                    <Link to={`/maps/${map[0]}/${map[1]}`}>
+                      <Card className={classes.map__card} variant="outlined">
+                        <CardActionArea>
+                          <CardMedia
+                            component="img"
+                            className={classes.map__image}
+                            image={"/assets/maps/" + map[0] + ".png"}
+                          />
+                          <CardContent>
+                            <Typography
+                              gutterBottom
+                              variant="h5"
+                              component="h2"
+                            >
+                              {map[1]}
+                            </Typography>
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
+                    </Link>
+                  </Grid>
+                ))}
+              </Grid>
             </Paper>
           </Grid>
         </Grid>
