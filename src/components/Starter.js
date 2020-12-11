@@ -1,9 +1,9 @@
-import { Button, TextField } from "@material-ui/core";
-import React, { useState } from "react";
-import "./Starter.css";
-import "./type.css";
+import { Button, TextField } from "@material-ui/core"
+import React, { useState } from "react"
+import "./Starter.css"
+import "./type.css"
 function Starter() {
-  const [starter, setStarter] = useState(null);
+  const [starter, setStarter] = useState(null)
 
   return (
     <div className="container" id="starter">
@@ -22,7 +22,7 @@ function Starter() {
                     <img src="/assets/sprites/bulbasaur.gif" alt="Bulbasaur" />
                   </div>
                   <h4>Bulbasaur</h4>
-                  <span class="type grass">grass</span>
+                  <span className="type grass">grass</span>
                 </div>
                 <div className="pokemon__container-card fire__type">
                   <div className="pokemon__sprite">
@@ -32,14 +32,14 @@ function Starter() {
                     />
                   </div>
                   <h4>Charmander</h4>
-                  <span class="type fire">fire</span>
+                  <span className="type fire">fire</span>
                 </div>
                 <div className="pokemon__container-card water__type">
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/squirtle.gif" alt="squirtle" />
                   </div>
                   <h4>Squirtle</h4>
-                  <span class="type water">water</span>
+                  <span className="type water">water</span>
                 </div>
               </div>
               <div className="pokemon__container-row">
@@ -48,21 +48,21 @@ function Starter() {
                     <img src="/assets/sprites/turtwig.gif" alt="Turtwig" />
                   </div>
                   <h4>Turtwig</h4>
-                  <span class="type grass">grass</span>
+                  <span className="type grass">grass</span>
                 </div>
                 <div className="pokemon__container-card fire__type">
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/chimchar.gif" alt="Chimchar" />
                   </div>
                   <h4>Chimchar</h4>
-                  <span class="type fire">fire</span>
+                  <span className="type fire">fire</span>
                 </div>
                 <div className="pokemon__container-card water__type">
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/piplup.gif" alt="Piplup" />
                   </div>
                   <h4>Piplup</h4>
-                  <span class="type water">water</span>
+                  <span className="type water">water</span>
                 </div>
               </div>
               <div className="pokemon__container-row">
@@ -71,21 +71,21 @@ function Starter() {
                     <img src="/assets/sprites/chespin.gif" alt="Chespin" />
                   </div>
                   <h4>Chespin</h4>
-                  <span class="type grass">grass</span>
+                  <span className="type grass">grass</span>
                 </div>
                 <div className="pokemon__container-card fire__type">
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/fennekin.gif" alt="Fennekin" />
                   </div>
                   <h4>Fennekin</h4>
-                  <span class="type fire">fire</span>
+                  <span className="type fire">fire</span>
                 </div>
                 <div className="pokemon__container-card water__type">
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/froakie.gif" alt="Froakie" />
                   </div>
                   <h4>Froakie</h4>
-                  <span class="type water">water</span>
+                  <span className="type water">water</span>
                 </div>
               </div>
             </div>
@@ -116,7 +116,7 @@ function Starter() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Starter;
+export default Starter
