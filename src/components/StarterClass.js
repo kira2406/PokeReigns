@@ -1,11 +1,8 @@
 import React, { Component } from "react"
 import Starter from "./Starter"
+import db from "./firebase"
 
 class StarterClass extends Component {
-  componentDidMount() {
-    console.log("Mounted")
-  }
-
   render() {
     return (
       <div>

@@ -67,6 +67,11 @@
   width: 100%;
   cursor: pointer;
 }
+.pokemon__container-selected {
+  background-color: rgb(57, 83, 122);
+  color: white;
+  z-index: 3;
+}
 .pokemon__sprite {
   height: 75px;
   justify-items: flex-end;

@@ -1,9 +1,22 @@
 import { Button, TextField } from "@material-ui/core"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import "./Starter.css"
 import "./type.css"
+import db from "./firebase"
 function Starter() {
   const [starter, setStarter] = useState(null)
+  const [pokemon, setPokemon] = useState(null)
+  useEffect(() => {
+    if (starter)
+      db.collection("pokemondb")
+        .doc(starter)
+        .get()
+        .then((pokemon) => {
+          setPokemon(pokemon.data())
+          console.log(pokemon.data().name)
+        })
+        .catch((error) => console.log(error))
+  }, [starter])
 
   return (
     <div className="container" id="starter">
@@ -11,12 +24,16 @@ function Starter() {
         <h2>Welcome to PokeReigns!!</h2>
         <div className="starter__subcontainer">
           <div className="starter__subcontainer--pokemon">
-            <h2>Choose your starter pokemon {starter}</h2>
+            <h2>Choose your starter pokemon</h2>
             <div className="pokemon__container-column">
               <div className="pokemon__container-row">
                 <div
-                  className="pokemon__container-card grass__type"
-                  onClick={() => setStarter("Bulbasaur")}
+                  className={
+                    starter === "1"
+                      ? "pokemon__container-card pokemon__container-selected grass__type"
+                      : "pokemon__container-card grass__type"
+                  }
+                  onClick={() => setStarter("1")}
                 >
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/bulbasaur.gif" alt="Bulbasaur" />
@@ -24,7 +41,14 @@ function Starter() {
                   <h4>Bulbasaur</h4>
                   <span className="type grass">grass</span>
                 </div>
-                <div className="pokemon__container-card fire__type">
+                <div
+                  className={
+                    starter === "4"
+                      ? "pokemon__container-card pokemon__container-selected fire__type"
+                      : "pokemon__container-card fire__type"
+                  }
+                  onClick={() => setStarter("4")}
+                >
                   <div className="pokemon__sprite">
                     <img
                       src="/assets/sprites/charmander.gif"
@@ -34,7 +58,14 @@ function Starter() {
                   <h4>Charmander</h4>
                   <span className="type fire">fire</span>
                 </div>
-                <div className="pokemon__container-card water__type">
+                <div
+                  className={
+                    starter === "7"
+                      ? "pokemon__container-card pokemon__container-selected water__type"
+                      : "pokemon__container-card water__type"
+                  }
+                  onClick={() => setStarter("7")}
+                >
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/squirtle.gif" alt="squirtle" />
                   </div>
@@ -43,21 +74,42 @@ function Starter() {
                 </div>
               </div>
               <div className="pokemon__container-row">
-                <div className="pokemon__container-card grass__type">
+                <div
+                  className={
+                    starter === "387"
+                      ? "pokemon__container-card pokemon__container-selected grass__type"
+                      : "pokemon__container-card grass__type"
+                  }
+                  onClick={() => setStarter("387")}
+                >
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/turtwig.gif" alt="Turtwig" />
                   </div>
                   <h4>Turtwig</h4>
                   <span className="type grass">grass</span>
                 </div>
-                <div className="pokemon__container-card fire__type">
+                <div
+                  className={
+                    starter === "390"
+                      ? "pokemon__container-card pokemon__container-selected fire__type"
+                      : "pokemon__container-card fire__type"
+                  }
+                  onClick={() => setStarter("390")}
+                >
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/chimchar.gif" alt="Chimchar" />
                   </div>
                   <h4>Chimchar</h4>
                   <span className="type fire">fire</span>
                 </div>
-                <div className="pokemon__container-card water__type">
+                <div
+                  className={
+                    starter === "393"
+                      ? "pokemon__container-card pokemon__container-selected water__type"
+                      : "pokemon__container-card water__type"
+                  }
+                  onClick={() => setStarter("393")}
+                >
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/piplup.gif" alt="Piplup" />
                   </div>
@@ -66,21 +118,42 @@ function Starter() {
                 </div>
               </div>
               <div className="pokemon__container-row">
-                <div className="pokemon__container-card grass__type">
+                <div
+                  className={
+                    starter === "650"
+                      ? "pokemon__container-card pokemon__container-selected grass__type"
+                      : "pokemon__container-card grass__type"
+                  }
+                  onClick={() => setStarter("650")}
+                >
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/chespin.gif" alt="Chespin" />
                   </div>
                   <h4>Chespin</h4>
                   <span className="type grass">grass</span>
                 </div>
-                <div className="pokemon__container-card fire__type">
+                <div
+                  className={
+                    starter === "653"
+                      ? "pokemon__container-card pokemon__container-selected fire__type"
+                      : "pokemon__container-card fire__type"
+                  }
+                  onClick={() => setStarter("653")}
+                >
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/fennekin.gif" alt="Fennekin" />
                   </div>
                   <h4>Fennekin</h4>
                   <span className="type fire">fire</span>
                 </div>
-                <div className="pokemon__container-card water__type">
+                <div
+                  className={
+                    starter === "656"
+                      ? "pokemon__container-card pokemon__container-selected water__type"
+                      : "pokemon__container-card water__type"
+                  }
+                  onClick={() => setStarter("656")}
+                >
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/froakie.gif" alt="Froakie" />
                   </div>
