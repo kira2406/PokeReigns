@@ -57,12 +57,13 @@ function App() {
         db.collection("users")
           .doc(user.uid)
           .collection("roster")
-          .get()
-          .then((snapshot) => {
+          .onSnapshot((snapshot) => {
+            roster = []
             snapshot.forEach((doc) => {
               roster.push({ id: doc.id, data: doc.data() })
               count++
             })
+            console.log("count" + count)
             while (count <= 6) {
               roster.push({
                 id: "empty",

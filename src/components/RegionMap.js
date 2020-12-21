@@ -160,6 +160,7 @@ export default function RegionMap({ match }) {
   const [presentPokemon, setPresentPokemon] = useState({})
   const [pokemonLoading, setPokemonLoading] = useState(false)
   const [openBattle, setOpenBattle] = useState(false)
+  const [appearedLevel, setAppearedLevel] = useState(5)
   var choices = [
     "115",
     "13",
@@ -182,7 +183,8 @@ export default function RegionMap({ match }) {
           // appearedPokemon.add([choices[i], result.data()])
           // appearedPokemon[choices[i]] = result.data()
 
-          presentPokemon[result.id] = result.data()
+          presentPokemon[result.id] = { id: result.id, data: result.data() }
+          presentPokemon[result.id].data["pid"] = result.id
           // console.log(appearedPokemon[result.id].name + "in loop")
         })
         .catch((e) => console.log("pokemon could not be fetched"))
@@ -192,12 +194,12 @@ export default function RegionMap({ match }) {
   async function catchPokemon() {
     setAttempt(true)
     setPokemonLoading(true)
-    if (Math.random() <= 0.4) {
+    if (Math.random() <= 0.8) {
       setAppear(true)
-
       setAppearedPokemon(
         presentPokemon[choices[Math.floor(Math.random() * choices.length)]]
       )
+      setAppearedLevel(Math.floor(Math.random() * 15) + 3)
       setPokemonLoading(false)
     } else {
       setAppear(false)
@@ -286,7 +288,11 @@ export default function RegionMap({ match }) {
           </Grid>
           <Grid item xs={12} sm={8}>
             {openBattle ? (
-              <CatchPokemon />
+              <CatchPokemon
+                rosters={roster}
+                appearedPokemon={appearedPokemon}
+                level={appearedLevel}
+              />
             ) : (
               <Paper className={classes.paper}>
                 <h2>{match.params.name}</h2>
@@ -318,25 +324,26 @@ export default function RegionMap({ match }) {
                                         <img
                                           src={
                                             "/assets/sprites/" +
-                                            appearedPokemon.name +
+                                            appearedPokemon.data.name +
                                             ".gif"
                                           }
-                                          alt={appearedPokemon.name}
+                                          alt={appearedPokemon.data.name}
                                           width={"45"}
                                         />
-                                        <p>{appearedPokemon.name}</p>
+                                        <p>{appearedPokemon.data.name}</p>
                                       </Grid>
                                       <Grid item xs={4}>
                                         <TypeButton
-                                          type1={appearedPokemon.type1}
-                                          type2={appearedPokemon.type2}
+                                          type1={appearedPokemon.data.type1}
+                                          type2={appearedPokemon.data.type2}
                                         />
-                                        <p>Level:5</p>
+                                        <p>Level:{appearedLevel}</p>
                                       </Grid>
                                       <Grid item xs={4}>
                                         <Button
                                           width={"100"}
                                           className={classes.capture_button}
+                                          onClick={() => setOpenBattle(true)}
                                           size="small"
                                         >
                                           Catch pokemon !
@@ -382,7 +389,7 @@ export default function RegionMap({ match }) {
                   p.name ? (
                     <Grid
                       item
-                      key={p.pos}
+                      key={p.data.pos}
                       className={
                         classes.pokemon_panel + " " + p.type1 + "__type"
                       }

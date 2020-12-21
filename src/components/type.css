@@ -98,3 +98,59 @@
 .none__type {
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.22), 0 2px 2px rgba(0, 0, 0, 0.24);
 }
+.grass__button {
+  background-color: #7c5 !important;
+}
+.fire__button {
+  background-color: #f42 !important;
+}
+.water__button {
+  background-color: #39f !important;
+}
+.normal__button {
+  background-color: #aa9 !important;
+}
+.electric__button {
+  background-color: #fc3 !important;
+}
+.ice__button {
+  background-color: #6cf !important;
+  color: #fff !important;
+}
+.fighting__button {
+  background-color: #b54 !important;
+}
+.poison__button {
+  background-color: #a59 !important;
+}
+.ground__button {
+  background-color: #db5 !important;
+}
+.flying__button {
+  background-color: #89f !important;
+}
+.psychic__button {
+  background-color: #f59 !important;
+}
+.bug__button {
+  background-color: #ab2 !important;
+}
+.rock__button {
+  background-color: #ba6 !important;
+}
+.ghost__button {
+  background-color: #66b !important;
+}
+.dragon__button {
+  background-color: #76e !important;
+}
+.dark__button {
+  background-color: #754 !important;
+}
+.steel__button {
+  background-color: #aab !important;
+  color: #000 !important;
+}
+.fairy__button {
+  background-color: #e9e !important;
+}

@@ -1,25 +1,299 @@
-pokemon.data.move1 && console.log(pokemon.data.move1)
-          pokemon.data.move1 &&
-            db
-              .collection("moves")
-              .doc(pokemon.data.move1)
-              .get()
-              .then((move) => (rosterMoves[pokemon.id]["move1"] = move.data()))
-          pokemon.data.move2 &&
-            db
-              .collection("moves")
-              .doc(pokemon.data.move2)
-              .get()
-              .then((move) => (rosterMoves[pokemon.id]["move2"] = move.data()))
-          pokemon.data.move3 &&
-            db
-              .collection("moves")
-              .doc(pokemon.data.move3)
-              .get()
-              .then((move) => (rosterMoves[pokemon.id]["move3"] = move.data()))
-          pokemon.data.move4 &&
-            db
-              .collection("moves")
-              .doc(pokemon.data.move4)
-              .get()
-              .then((move) => (rosterMoves[pokemon.id]["move4"] = move.data()))
+<Grid container spacing={3}>
+              <Grid item sm={6} className={classes.pokemon_container}>
+                <Paper elevation={3} className={classes.rosterPokemon}>
+                  <Grid container spacing={1}>
+                    <Grid item sm={4} className={classes.image_container}>
+                      <img
+                        src={
+                          "/assets/sprites/" +
+                          roster[inBattlePokemon].data.name +
+                          ".gif"
+                        }
+                        alt={roster[inBattlePokemon].data.name}
+                      />
+                    </Grid>
+                    <Grid item sm={8}>
+                      <Grid container>
+                        <Grid item sm={6}>
+                          {roster[inBattlePokemon].data.name}
+                        </Grid>
+                        <Grid item sm={6}>
+                          <TypeButton
+                            type1={roster[inBattlePokemon].data.type1}
+                            type2={roster[inBattlePokemon].data.type2}
+                          />
+                        </Grid>
+                        <Grid item sm={6}>
+                          <p className={classes.hp}>
+                            HP: {roster[inBattlePokemon].data["currentHP"]}/
+                            {roster[inBattlePokemon].data["hp"]}
+                          </p>
+                        </Grid>
+                        <Grid item sm={6}>
+                          <p className={classes.level}>
+                            Level: {roster[inBattlePokemon].data.level}
+                          </p>
+                        </Grid>
+                      </Grid>
+
+                      {(roster[inBattlePokemon].data["currentHP"] /
+                        roster[inBattlePokemon].data["hp"]) *
+                        100 >
+                      30 ? (
+                        <BorderLinearProgress
+                          variant="determinate"
+                          value={
+                            (roster[inBattlePokemon].data["currentHP"] /
+                              roster[inBattlePokemon].data["hp"]) *
+                            100
+                          }
+                        />
+                      ) : (
+                        <BorderDangerLinearProgress
+                          className={classes.danger}
+                          variant="determinate"
+                          value={
+                            (roster[inBattlePokemon].data["currentHP"] /
+                              roster[inBattlePokemon].data["hp"]) *
+                            100
+                          }
+                        />
+                      )}
+                    </Grid>
+                  </Grid>
+                </Paper>
+              </Grid>
+              <Grid item sm={6} className={classes.pokemon_container}>
+                <Paper elevation={3} className={classes.enemyPokemon}>
+                  <Grid container spacing={1}>
+                    <Grid item sm={4} className={classes.image_container}>
+                      <img
+                        src={
+                          "/assets/sprites/" +
+                          appearedPokemon.data.name +
+                          ".gif"
+                        }
+                        alt={appearedPokemon.data.name}
+                      />
+                    </Grid>
+                    <Grid item sm={8}>
+                      <Grid container>
+                        <Grid item sm={6}>
+                          {wildPokemon.data.name}
+                        </Grid>
+                        <Grid item sm={6}>
+                          <TypeButton
+                            type1={wildPokemon.data.type1}
+                            type2={wildPokemon.data.type2}
+                          />
+                        </Grid>
+                        <Grid item sm={6}>
+                          <p className={classes.hp}>
+                            HP: {wildPokemon.data["currentHP"]}/
+                            {wildPokemon.data["hp"]}
+                          </p>
+                        </Grid>
+                        <Grid item sm={6}>
+                          <p className={classes.level}>
+                            Level: {wildPokemon.data.level}
+                          </p>
+                        </Grid>
+                      </Grid>
+                      {(wildPokemon.data["currentHP"] /
+                        wildPokemon.data["hp"]) *
+                        100 >
+                      30 ? (
+                        <BorderLinearProgress
+                          variant="determinate"
+                          value={
+                            (wildPokemon.data["currentHP"] /
+                              wildPokemon.data["hp"]) *
+                            100
+                          }
+                        />
+                      ) : (
+                        <BorderDangerLinearProgress
+                          className={classes.danger}
+                          variant="determinate"
+                          value={
+                            (wildPokemon.data["currentHP"] /
+                              wildPokemon.data["hp"]) *
+                            100
+                          }
+                        />
+                      )}
+                    </Grid>
+                  </Grid>
+                </Paper>
+              </Grid>
+            </Grid>
+            <Grid container spacing={3} className={classes.log_container}>
+              {battlelog.map((log) => (
+                <div>{log}</div>
+              ))}
+              <p>Choose your move !</p>
+            </Grid>
+            <Grid container spacing={3} className={classes.move_container}>
+              <Grid item sm={3} className={classes.moveButtonContainer}>
+                <Button
+                  className={
+                    classes.moveButton +
+                    " " +
+                    movesData[roster[inBattlePokemon].data.move1]["type"] +
+                    "__button"
+                  }
+                  onClick={() => {
+                    setBattlelog("")
+                    setBattlelog(
+                      Battler(
+                        roster[inBattlePokemon],
+                        wildPokemon,
+                        movesData[roster[inBattlePokemon].data.move1],
+                        movesData[wildPokemon.data.move1]
+                      )
+                    )
+                  }}
+                >
+                  {movesData[roster[inBattlePokemon].data.move1]["identifier"]}
+                </Button>
+              </Grid>
+              <Grid item sm={3} className={classes.moveButtonContainer}>
+                <Button
+                  className={
+                    classes.moveButton +
+                    " " +
+                    movesData[roster[inBattlePokemon].data.move2]["type"] +
+                    "__button"
+                  }
+                >
+                  {movesData[roster[inBattlePokemon].data.move2]["identifier"]}
+                </Button>
+              </Grid>
+              <Grid item sm={3} className={classes.moveButtonContainer}>
+                <Button
+                  className={
+                    classes.moveButton +
+                    " " +
+                    movesData[roster[inBattlePokemon].data.move3]["type"] +
+                    "__button"
+                  }
+                >
+                  {movesData[roster[inBattlePokemon].data.move3]["identifier"]}
+                </Button>
+              </Grid>
+              <Grid item sm={3} className={classes.moveButtonContainer}>
+                <Button
+                  className={
+                    classes.moveButton +
+                    " " +
+                    movesData[roster[inBattlePokemon].data.move4]["type"] +
+                    "__button"
+                  }
+                >
+                  {movesData[roster[inBattlePokemon].data.move4]["identifier"]}
+                </Button>
+              </Grid>
+              <Grid item sm={6} className={classes.moveButtonContainer}>
+                <Tooltip
+                  title={
+                    <React.Fragment>
+                      <Typography>
+                        Make sure the wild Pokemon's health is low before
+                        attempting to catch it
+                      </Typography>
+                    </React.Fragment>
+                  }
+                >
+                  <Button
+                    className={classes.catchButton}
+                    onClick={() => {
+                      // setUserHealth(userHealth - 10)
+                      roster[0].data.currentHP = roster[0].data.currentHP - 10
+                      setWildPokemon((prevState) => ({
+                        ...prevState,
+                        currentHP: prevState.currentHP - 10,
+                      }))
+                      // wildPokemon.currentHP = wildPokemon.currentHP - 10
+                    }}
+                  >
+                    Catch Pokemon
+                  </Button>
+                </Tooltip>
+              </Grid>
+              <Grid item sm={6} className={classes.moveButtonContainer}>
+                <Tooltip
+                  title={
+                    <React.Fragment>
+                      <Typography>
+                        Selecting to quit, you will lose the battle
+                      </Typography>
+                    </React.Fragment>
+                  }
+                >
+                  <Button className={classes.quitButton}>Quit Battle</Button>
+                </Tooltip>
+              </Grid>
+            </Grid>
+            <Grid container spacing={3}>
+              <Grid item sm={6} className={classes.pokemon_container}>
+                <Paper elevation={3} className={classes.enemyPokemon}>
+                  <p>Select a pokemon below to swap with the curent pokemon</p>
+                  <List className={classes.root}>
+                    {roster.map((pokemon, index) =>
+                      pokemon.id !== "empty" ? (
+                        <ListItem
+                          onClick={() => handleSwapConfOpen(index)}
+                          elevation={3}
+                          key={index}
+                          className={
+                            pokemon.data.currentHP <= 0
+                              ? classes.faintP
+                              : classes.activeP
+                          }
+                        >
+                          <ListItemAvatar>
+                            <img
+                              src={
+                                "/assets/sprites/" + pokemon.data.name + ".gif"
+                              }
+                              alt={pokemon.data.name}
+                            />
+                          </ListItemAvatar>
+                          <ListItemText>
+                            {pokemon.data.name}
+                            <br></br>
+                            Level: {pokemon.data.level}
+                            {(pokemon.data.currentHP / pokemon.data.hp) * 100 >
+                            30 ? (
+                              <BorderLinearProgress
+                                variant="determinate"
+                                value={
+                                  (pokemon.data.currentHP / pokemon.data.hp) *
+                                  100
+                                }
+                              />
+                            ) : (
+                              <BorderDangerLinearProgress
+                                className={classes.danger}
+                                variant="determinate"
+                                value={
+                                  (pokemon.data.currentHP / pokemon.data.hp) *
+                                  100
+                                }
+                              />
+                            )}
+                          </ListItemText>
+                          <p className={classes.hp}>
+                            HP: {pokemon.data.currentHP}/{pokemon.data.hp}
+                          </p>
+                        </ListItem>
+                      ) : null
+                    )}
+                  </List>
+                </Paper>
+              </Grid>
+              <Grid item sm={6} className={classes.pokemon_container}>
+                <Paper elevation={3} className={classes.enemyPokemon}></Paper>
+              </Grid>
+              <Grid item sm={12} className={classes.quitButtonContainer}></Grid>
+            </Grid>
