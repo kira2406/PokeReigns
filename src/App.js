@@ -31,6 +31,7 @@ import { lightTheme, darkTheme } from "./themes/themes.js"
 import GlobalStyles from "./themes/GlobalStyles"
 import Demo from "./components/demo"
 import RegionMap from "./components/RegionMap"
+import Battle from "./components/Battle"
 
 function App() {
   const [darkMode, setDarkMode] = useState(true)
@@ -57,6 +58,7 @@ function App() {
         db.collection("users")
           .doc(user.uid)
           .collection("roster")
+          .orderBy("pos", "asc")
           .onSnapshot((snapshot) => {
             roster = []
             snapshot.forEach((doc) => {
@@ -91,6 +93,7 @@ function App() {
           <PrivateRoute exact path="/maps/:map/:name" component={RegionMap} />
           <PrivateRoute exact path="/pokemon" component={YourPokemon} />
           <PrivateRoute exact path="/demo" component={Demo} />
+          <PrivateRoute exact path="/battle" component={Battle} />
           <Route path="/login" component={Login} />
         </Switch>
       </Router>

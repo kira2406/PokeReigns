@@ -95,8 +95,18 @@
 .water__type {
   box-shadow: 0 1px rgba(24, 86, 255, 0.808), 0 2px rgba(24, 86, 255, 0.829);
 }
+.poison__type {
+  box-shadow: 0 1px rgba(170, 85, 153, 0.88), 0 2px rgba(170, 85, 153, 1);
+}
+.normal_type {
+  box-shadow: 0 1px rgba(170, 170, 153, 0.88), 0 2px rgba(170, 170, 153, 0.88);
+}
 .none__type {
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.22), 0 2px 2px rgba(0, 0, 0, 0.24);
+}
+.electric__type {
+  box-shadow: 0 2px 3px rgba(255, 204, 51, 0.8),
+    0 2px 2px rgba(255, 204, 51, 0.8);
 }
 .grass__button {
   background-color: #7c5 !important;
@@ -108,10 +118,10 @@
   background-color: #39f !important;
 }
 .normal__button {
-  background-color: #aa9 !important;
+  background-color: rgb(170, 170, 153) !important;
 }
 .electric__button {
-  background-color: #fc3 !important;
+  background-color: rgb(255, 204, 51) !important;
 }
 .ice__button {
   background-color: #6cf !important;
@@ -121,7 +131,7 @@
   background-color: #b54 !important;
 }
 .poison__button {
-  background-color: #a59 !important;
+  background-color: rgb(170, 85, 153) !important;
 }
 .ground__button {
   background-color: #db5 !important;
