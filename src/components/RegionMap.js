@@ -160,18 +160,166 @@ export default function RegionMap({ match }) {
   const [presentPokemon, setPresentPokemon] = useState({})
   const [pokemonLoading, setPokemonLoading] = useState(false)
   const [openBattle, setOpenBattle] = useState(false)
+  const [appearedLevel, setAppearedLevel] = useState(5)
   var choices = [
-    "115",
+    "21",
+    "16",
+    "420",
+    "495",
+    "672",
+    "187",
     "13",
     "316",
-    "216",
     "327",
     "406",
     "511",
     "69",
     "10",
     "204",
+    "123",
+    "168",
+    "165",
+    "167",
+    "60",
+    "418",
+    "84",
+    "551",
+    "675",
+    "198",
+    "443",
+    "149",
+    "108",
+    "115",
+    "161",
+    "335",
+    "615",
+    "124",
+    "220",
+    "131",
+    "646",
+    "698",
+    "478",
+    "393",
+    "109",
+    "133",
+    "216",
+    "241",
+    "399",
+    "424",
+    "434",
+    "23",
+    "88",
+    "453",
+    "1",
+    "48",
+    "92",
+    "427",
+    "449",
+    "58",
+    "77",
+    "324",
+    "513",
+    "244",
+    "146",
+    "250",
+    "587",
+    "506",
+    "507",
+    "163",
+    "396",
+    "519",
+    "172",
+    "179",
+    "667",
+    "436",
+    "203",
+    "261",
+    "509",
+    "307",
+    "338",
+    "337",
+    "63",
+    "96",
+    "202",
+    "325",
+    "403",
+    "355",
+    "574",
+    "605",
+    "527",
+    "374",
+    "562",
+    "263",
+    "287",
+    "19",
+    "359",
+    "228",
+    "248",
+    "274",
+    "658",
+    "125",
+    "27",
+    "105",
+    "231",
+    "328",
+    "341",
+    "100",
+    "7",
+    "54",
+    "90",
   ]
+  var mapDiverse = {
+    grasslands: [
+      ["19", "399", "16", "21", "16", "10", "406", "13", "327"],
+      ["420"],
+      ["495", "672", "187"],
+    ],
+    forestlands: [
+      ["115", "13", "316", "216", "327", "406", "511", "69", "10", "204"],
+      ["123", "168", "165", "167"],
+      ["60", "418"],
+    ],
+    rocklands: [
+      ["84", "163", "519"],
+      ["551", "675", "198"],
+      ["443", "149"],
+    ],
+    caves: [
+      ["263", "27", "287", "19", "359"],
+      ["228", "248", "274"],
+      ["658", "125", "100"],
+    ],
+    islands: [
+      ["27", "105"],
+      ["231", "328", "341"],
+      ["100", "7", "54", "90"],
+    ],
+    ruins: [
+      ["203", "261", "509", "307", "338", "337", "27"],
+      ["63", "96", "202", "325", "403", "355"],
+      ["574", "605", "527", "374", "562"],
+    ],
+    powerplant: [
+      ["506", "507", "163", "396", "519"],
+      ["172", , "179", "667"],
+      ["374", "436"],
+    ],
+    magmalands: [
+      ["427", "506", "449"],
+      ["58", "77", "324", "513"],
+      ["244", "146", "250", "587"],
+    ],
+    marshlands: [
+      ["109", "133", "216", "241", "399", "424"],
+      ["434", "23", "88"],
+      ["453", "1", "48", "92"],
+    ],
+    icelands: [
+      ["108", "115", "133", "161", "335"],
+      ["615", "124", "220", "131"],
+      ["646", "698", "478", "393"],
+    ],
+  }
   useEffect(() => {
     var i = 0
     while (i < choices.length) {
@@ -182,22 +330,47 @@ export default function RegionMap({ match }) {
           // appearedPokemon.add([choices[i], result.data()])
           // appearedPokemon[choices[i]] = result.data()
 
-          presentPokemon[result.id] = result.data()
+          presentPokemon[result.id] = { id: result.id, data: result.data() }
+          presentPokemon[result.id].data["pid"] = result.id
+
           // console.log(appearedPokemon[result.id].name + "in loop")
         })
         .catch((e) => console.log("pokemon could not be fetched"))
       i++
     }
   }, [])
-  async function catchPokemon() {
+  async function catchPokemon(region) {
+    console.log("IN region:" + mapDiverse[region])
     setAttempt(true)
     setPokemonLoading(true)
-    if (Math.random() <= 0.4) {
+    if (Math.random() <= 0.8) {
       setAppear(true)
-
-      setAppearedPokemon(
-        presentPokemon[choices[Math.floor(Math.random() * choices.length)]]
-      )
+      var chance = Math.random()
+      if (chance <= 0.5) {
+        setAppearedPokemon(
+          presentPokemon[
+            mapDiverse[region][0][
+              Math.floor(Math.random() * mapDiverse[region][0].length)
+            ]
+          ]
+        )
+      } else if (chance <= 0.9)
+        setAppearedPokemon(
+          presentPokemon[
+            mapDiverse[region][1][
+              Math.floor(Math.random() * mapDiverse[region][1].length)
+            ]
+          ]
+        )
+      else
+        setAppearedPokemon(
+          presentPokemon[
+            mapDiverse[region][2][
+              Math.floor(Math.random() * mapDiverse[region][2].length)
+            ]
+          ]
+        )
+      setAppearedLevel(Math.floor(Math.random() * 15) + 3)
       setPokemonLoading(false)
     } else {
       setAppear(false)
@@ -240,7 +413,7 @@ export default function RegionMap({ match }) {
         <Grid container spacing={5}>
           <Grid item xs={12} sm={2}>
             <Paper className={classes.paper}>
-              <h2>Choose a map</h2>
+              <h4>Choose a map</h4>
               <Grid
                 container
                 spacing={4}
@@ -286,7 +459,11 @@ export default function RegionMap({ match }) {
           </Grid>
           <Grid item xs={12} sm={8}>
             {openBattle ? (
-              <CatchPokemon />
+              <CatchPokemon
+                rosters={roster}
+                appearedPokemon={appearedPokemon}
+                level={appearedLevel}
+              />
             ) : (
               <Paper className={classes.paper}>
                 <h2>{match.params.name}</h2>
@@ -318,25 +495,25 @@ export default function RegionMap({ match }) {
                                         <img
                                           src={
                                             "/assets/sprites/" +
-                                            appearedPokemon.name +
+                                            appearedPokemon.data.name +
                                             ".gif"
                                           }
-                                          alt={appearedPokemon.name}
-                                          width={"45"}
+                                          alt={appearedPokemon.data.name}
                                         />
-                                        <p>{appearedPokemon.name}</p>
+                                        <p>{appearedPokemon.data.name}</p>
                                       </Grid>
                                       <Grid item xs={4}>
                                         <TypeButton
-                                          type1={appearedPokemon.type1}
-                                          type2={appearedPokemon.type2}
+                                          type1={appearedPokemon.data.type1}
+                                          type2={appearedPokemon.data.type2}
                                         />
-                                        <p>Level:5</p>
+                                        <p>Level:{appearedLevel}</p>
                                       </Grid>
                                       <Grid item xs={4}>
                                         <Button
                                           width={"100"}
                                           className={classes.capture_button}
+                                          onClick={() => setOpenBattle(true)}
                                           size="small"
                                         >
                                           Catch pokemon !
@@ -361,7 +538,7 @@ export default function RegionMap({ match }) {
                       <img
                         width="500"
                         src={"/assets/maps/" + match.params.map + ".png"}
-                        onClick={catchPokemon}
+                        onClick={() => catchPokemon(match.params.map)}
                         className={classes.map__display}
                         alt={"map" + match.params.map}
                       />
@@ -382,7 +559,7 @@ export default function RegionMap({ match }) {
                   p.name ? (
                     <Grid
                       item
-                      key={p.pos}
+                      key={p.data.pos}
                       className={
                         classes.pokemon_panel + " " + p.type1 + "__type"
                       }

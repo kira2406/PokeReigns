@@ -1,10 +1,12 @@
 import {
   Avatar,
   Button,
+  ButtonGroup,
   CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
   Divider,
   FormControl,
@@ -96,9 +98,31 @@ const useStyles = makeStyles((theme) => ({
     justifyItems: "center",
     alignItems: "center",
   },
+  otherPokemonPanel: {
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.30), 0 1px 2px rgba(0, 0, 0, 0.30)",
+    color: theme.palette.text.primary,
+    borderRadius: 5,
+    padding: 20,
+    marginTop: 10,
+  },
+  yptitle: {
+    padding: 10,
+    fontSize: 30,
+  },
+  loadingDisp: {
+    display: "flex",
+    flexDirection: "column",
+    margin: "auto",
+    width: "fit-content",
+    paddingBottom: 20,
+  },
   move: {
     textTransform: "capitalize",
     padding: 20,
+  },
+  disabled: {
+    pointerEvents: "none",
   },
 }))
 export default function YourPokemon() {
@@ -112,14 +136,14 @@ export default function YourPokemon() {
   const [movesdb, setMovesdb] = useState({}) //allowable moves of roster pokemon
   const [rosterMoves, setRosterMoves] = useState({}) //moves of roster pokemons
   const [movesLoading, setMovesLoading] = useState(false) //moves loading
+  const [pokemonsLoading, setPokemonsLoading] = useState(true) //pokemons loading
   const [movesData, setMovesData] = useState({})
   const [MovesIds, setMovesIds] = useState([]) //storing all moves into a single array
-  const [reload, setReload] = useState(false)
-
-  if (reload) {
-    // history.push("/home")
-    setReload(false)
-  }
+  const [remainingPokemons, setRemainingPokemons] = useState(false)
+  const [selectOpen, setSelectOpen] = useState(false)
+  const [SwappingPokemon, setSwappingPokemon] = useState(null)
+  const [changesMade, setChangesMade] = useState(false)
+  const [savingChanges, setSavingChanges] = useState(false)
 
   const handleClickOpen = (value) => {
     setOpen(true)
@@ -138,6 +162,7 @@ export default function YourPokemon() {
         .collection("roster")
         .get()
         .then((snapshot) => {
+          roster = []
           snapshot.forEach((doc) => {
             roster.push({ id: doc.id, data: doc.data() })
             count++
@@ -154,7 +179,6 @@ export default function YourPokemon() {
         })
     }
     setOpen(false)
-    setReload(true)
   }
 
   async function handleLogout() {
@@ -167,7 +191,23 @@ export default function YourPokemon() {
       setError("Failed to log out")
     }
   }
-
+  useEffect(() => {
+    var rpokemon = []
+    setRemainingPokemons(rpokemon)
+    db.collection("users")
+      .doc(currentUser.uid)
+      .collection("pokemons")
+      .onSnapshot((result) => {
+        rpokemon = []
+        result.forEach((pokemon) => {
+          console.log(pokemon.data())
+          rpokemon.push({ id: pokemon.id, data: pokemon.data() })
+        })
+        console.log(rpokemon)
+        setRemainingPokemons(rpokemon)
+        setPokemonsLoading(false)
+      })
+  }, [])
   useEffect(() => {
     if (roster !== null) {
       setMovesLoading(true)
@@ -218,7 +258,77 @@ export default function YourPokemon() {
       // console.log("MovesData" + movesData["33"]["identifier"])
     })
   }, [MovesIds, roster])
+  function HandleSelectOpen() {
+    setSelectOpen(true)
+  }
+  function HandleSelectClose() {
+    setSelectOpen(false)
+  }
 
+  function handleSwapPokemon(pos, index) {
+    setChangesMade(true)
+    setSwappingPokemon(remainingPokemons[index])
+    console.log(
+      "Swapping " +
+        remainingPokemons[index].data.name +
+        " with " +
+        roster[pos - 1].data.name
+    )
+    var temp = roster[pos - 1]
+    roster[pos - 1] = remainingPokemons[index]
+    remainingPokemons[index] = temp
+  }
+
+  async function handleSaveChanges() {
+    const dbRoster = await db
+      .collection("users")
+      .doc(currentUser.uid)
+      .collection("roster")
+      .orderBy("pos", "asc")
+      .get()
+    let rindex = 0
+    const result = await dbRoster.forEach((rosterPokemon) => {
+      async function a(rosterPokemon, index) {
+        console.log(rosterPokemon.id + " " + roster[index].id)
+        if (rosterPokemon.id !== roster[index].id) {
+          roster[index].data.pos = index + 1
+          // console.log(roster[index])
+          const pdata = rosterPokemon.data()
+          pdata.pos = null
+          // console.log(rosterPokemon)
+          const res1 = await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("pokemons")
+            .doc(rosterPokemon.id)
+            .set(pdata)
+          const res4 = await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("pokemons")
+            .doc(roster[index].id)
+            .delete()
+          const res2 = await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("roster")
+            .doc(roster[index].id)
+            .set(roster[index].data)
+          console.log("Added pokemons to roster and pokemons")
+          const res3 = await db
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("roster")
+            .doc(rosterPokemon.id)
+            .delete()
+        }
+      }
+      a(rosterPokemon, rindex)
+      rindex = rindex + 1
+    })
+
+    setChangesMade(false)
+  }
   return (
     <div className={classes.container}>
       <h1 className={classes.title}>Poke Reigns</h1>
@@ -293,31 +403,106 @@ export default function YourPokemon() {
                 ) : (
                   <CircularProgress />
                 )}
+                {changesMade ? (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      setSavingChanges(true)
+                      handleSaveChanges()
+                      setSavingChanges(false)
+                    }}
+                  >
+                    Save Changes
+                  </Button>
+                ) : null}
               </Grid>
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Paper className={classes.paper}>
-              <p className="parameter">
-                Trainer name:
-                <span className="value">
-                  {trainerName ? trainerName : "LOADING"}
-                </span>
-              </p>
-              <p className="parameter">
-                Trainer ID:
-                <span className="value">85985675</span>
-              </p>
-              <p className="parameter">
-                No of Pokemons:
-                <span className="value">
-                  {roster ? roster.length : "LOADING"}
-                </span>
-              </p>
-              <p className="parameter">
-                Badges:
-                <span className="value">0</span>
-              </p>
+              <h2>Your Pokemons</h2>
+              <Grid container>
+                {pokemonsLoading ? (
+                  <CircularProgress />
+                ) : remainingPokemons ? (
+                  remainingPokemons.map((pokemon, index) => (
+                    <Grid item sm={12} className={classes.otherPokemonPanel}>
+                      <Grid container>
+                        <Grid item sm={4}>
+                          <img
+                            src={
+                              "/assets/sprites/" + pokemon.data.name + ".gif"
+                            }
+                            alt={pokemon.data.name}
+                          />
+                        </Grid>
+                        <Grid item sm={4}>
+                          <h3>{pokemon.data.name}</h3>
+                          <p>Level: {pokemon.data.level}</p>
+                          <TypeButton
+                            type1={pokemon.data.type1}
+                            type2={pokemon.data.type2}
+                          />
+                        </Grid>
+                        <Grid item sm={4}>
+                          <ButtonGroup
+                            variant="contained"
+                            color="primary"
+                            aria-label="contained primary button group"
+                            disabled={changesMade ? true : false}
+                          >
+                            <ButtonGroup
+                              orientation="vertical"
+                              color="primary"
+                              aria-label="vertical contained primary button group"
+                              variant="contained"
+                            >
+                              <Button
+                                onClick={() => handleSwapPokemon(1, index)}
+                              >
+                                One
+                              </Button>
+                              <Button
+                                onClick={() => handleSwapPokemon(3, index)}
+                              >
+                                Three
+                              </Button>
+                              <Button
+                                onClick={() => handleSwapPokemon(5, index)}
+                              >
+                                Five
+                              </Button>
+                            </ButtonGroup>
+                            <ButtonGroup
+                              orientation="vertical"
+                              color="primary"
+                              aria-label="vertical contained primary button group"
+                              variant="contained"
+                            >
+                              <Button
+                                onClick={() => handleSwapPokemon(2, index)}
+                              >
+                                Two
+                              </Button>
+                              <Button
+                                onClick={() => handleSwapPokemon(4, index)}
+                              >
+                                Four
+                              </Button>
+                              <Button
+                                onClick={() => handleSwapPokemon(6, index)}
+                              >
+                                Six
+                              </Button>
+                            </ButtonGroup>
+                          </ButtonGroup>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  ))
+                ) : null}
+              </Grid>
             </Paper>
           </Grid>
         </Grid>
@@ -333,6 +518,19 @@ export default function YourPokemon() {
           currentUser={currentUser}
           setRosterData={setRosterData}
         />
+        <Dialog
+          open={savingChanges}
+          disableBackdropClick
+          disableEscapeKeyDown
+          minWidth="xs"
+        >
+          <DialogTitle id="customized-dialog-title">Saving Changes</DialogTitle>
+          <DialogContent>
+            <Grid className={classes.loadingDisp}>
+              <CircularProgress />
+            </Grid>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   )

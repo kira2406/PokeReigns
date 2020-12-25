@@ -74,68 +74,6 @@ const useStyles = makeStyles((theme) => ({
     width: "50%",
   },
 }))
-// const useStyles = makeStyles((theme) => ({
-//   title: {
-//     fontSize: 40,
-//     textAlign: "center",
-//     fontFamily: "Montserrat",
-//   },
-//   paper: {
-//     textAlign: "center",
-//     padding: 40,
-//     backgroundColor: theme.palette.background.paper,
-//     boxShadow: "0 1px 3px rgba(0, 0, 0, 0.42), 0 1px 2px rgba(0, 0, 0, 0.44)",
-//     color: theme.palette.text.primary,
-//   },
-//   control: {
-//     padding: theme.spacing(2),
-//   },
-//   container2: {
-//     backgroundColor: "#000",
-//     padding: 20,
-//   },
-//   paper2: {
-//     textAlign: "center",
-//     color: theme.palette.text.secondary,
-//     padding: 20,
-//   },
-//   roster_container: {
-//     color: theme.palette.text.primary,
-//     backgroundColor: theme.palette.background.paper,
-//     boxShadow: "0 1px 3px rgba(0, 0, 0, 0.42), 0 1px 2px rgba(0, 0, 0, 0.44)",
-//     borderRadius: 5,
-//   },
-//   pokemon_container: {
-//     display: "flex",
-//     flexWrap: "wrap",
-//     padding: 10,
-//     justifyContent: "space-evenly",
-//   },
-//   info_container: {
-//     color: theme.palette.text.primary,
-//     backgroundColor: theme.palette.background.paper,
-//     boxShadow: "0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)",
-//     borderRadius: 5,
-//     padding: 30,
-//     textAlign: "center",
-//   },
-//
-//   pokemon_panel: {
-//     display: "flex",
-//     padding: 20,
-//     borderRadius: 5,
-//     flexDirection: "row",
-//     boxShadow: "0 1px 3px rgba(0, 0, 0, 0.32), 0 1px 2px rgba(0, 0, 0, 0.34)",
-//     cursor: "pointer",
-//     flex: "0 0 200",
-//     margin: 10,
-//     width: "50%",
-//   },
-//   fire__type: {
-//     boxShadow:
-//       "0 1px 3px rgba(255, 78, 24, 0.808),0 1px 2px rgba(255, 78, 24, 0.829)",
-//   },
-// }))
 export default function Home() {
   const classes = useStyles()
   const {
@@ -178,7 +116,9 @@ export default function Home() {
             <Button color="primary" onClick={() => history.push("/maps")}>
               Maps
             </Button>
-            <Button color="primary">Battle</Button>
+            <Button color="primary" onClick={() => history.push("/battle")}>
+              Battle
+            </Button>
             <Button color="primary" onClick={handleLogout}>
               Logout
             </Button>

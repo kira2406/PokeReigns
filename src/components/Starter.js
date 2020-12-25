@@ -75,8 +75,8 @@ function Starter() {
       pokemon.pid = starter
       pokemon.move1 = "33"
       pokemon.move2 = "45"
-      pokemon.move3 = "null"
-      pokemon.move4 = "null"
+      pokemon.move3 = "15"
+      pokemon.move4 = "97"
       db.collection("users")
         .doc(currentUser.uid)
         .set({
