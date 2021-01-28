@@ -298,7 +298,11 @@ export default function Battle() {
                         >
                           <div className="pokemon__panel-sprite ">
                             <img
-                              src={"/assets/sprites/" + p.data.name + ".gif"}
+                              src={
+                                "/assets/sprites/" +
+                                p.data.name.toLowerCase() +
+                                ".gif"
+                              }
                               alt={p.data.name}
                             />
                           </div>
@@ -416,7 +420,7 @@ export default function Battle() {
                                       <img
                                         src={
                                           "/assets/sprites/" +
-                                          pokemon.name +
+                                          pokemon.name.toLowerCase() +
                                           ".gif"
                                         }
                                         alt={pokemon.name}

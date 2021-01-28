@@ -617,7 +617,7 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
                       <img
                         src={
                           "/assets/sprites/" +
-                          roster[inBattlePokemon].data.name +
+                          roster[inBattlePokemon].data.name.toLowerCase() +
                           ".gif"
                         }
                         alt={roster[inBattlePokemon].data.name}
@@ -671,7 +671,7 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
                       <img
                         src={
                           "/assets/sprites/" +
-                          appearedPokemon.data.name +
+                          appearedPokemon.data.name.toLowerCase() +
                           ".gif"
                         }
                         alt={appearedPokemon.data.name}
@@ -728,7 +728,7 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
                           <img
                             src={
                               "/assets/sprites/" +
-                              wildPokemon.data.name +
+                              wildPokemon.data.name.toLowerCase() +
                               ".gif"
                             }
                             alt={wildPokemon.data.name}
@@ -964,7 +964,7 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
                               <img
                                 src={
                                   "/assets/sprites/" +
-                                  pokemon.data.name +
+                                  pokemon.data.name.toLowerCase() +
                                   ".gif"
                                 }
                                 alt={pokemon.data.name}

@@ -581,7 +581,7 @@ export default function GymBattle({ rosters, oppPokemons, gymleader }) {
                       <img
                         src={
                           "/assets/sprites/" +
-                          roster[inBattlePokemon].data.name +
+                          roster[inBattlePokemon].data.name.toLowerCase() +
                           ".gif"
                         }
                         alt={roster[inBattlePokemon].data.name}
@@ -635,7 +635,7 @@ export default function GymBattle({ rosters, oppPokemons, gymleader }) {
                       <img
                         src={
                           "/assets/sprites/" +
-                          ePokemons[inBattleEPokemon].name +
+                          ePokemons[inBattleEPokemon].name.toLowerCase() +
                           ".gif"
                         }
                         alt={ePokemons[inBattleEPokemon].name}
@@ -899,7 +899,9 @@ export default function GymBattle({ rosters, oppPokemons, gymleader }) {
                           <ListItemAvatar>
                             <img
                               src={
-                                "/assets/sprites/" + pokemon.data.name + ".gif"
+                                "/assets/sprites/" +
+                                pokemon.data.name.toLowerCase() +
+                                ".gif"
                               }
                               alt={pokemon.data.name}
                             />
@@ -954,7 +956,11 @@ export default function GymBattle({ rosters, oppPokemons, gymleader }) {
                         >
                           <ListItemAvatar>
                             <img
-                              src={"/assets/sprites/" + pokemon.name + ".gif"}
+                              src={
+                                "/assets/sprites/" +
+                                pokemon.name.toLowerCase() +
+                                ".gif"
+                              }
                               alt={pokemon.name}
                             />
                           </ListItemAvatar>

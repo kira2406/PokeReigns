@@ -373,7 +373,11 @@ export default function YourPokemon() {
                       >
                         <div className="pokemon__panel-sprite ">
                           <img
-                            src={"/assets/sprites/" + p.data.name + ".gif"}
+                            src={
+                              "/assets/sprites/" +
+                              p.data.name.toLowerCase() +
+                              ".gif"
+                            }
                             alt={p.data.name}
                           />
                         </div>
@@ -434,7 +438,9 @@ export default function YourPokemon() {
                         <Grid item sm={4}>
                           <img
                             src={
-                              "/assets/sprites/" + pokemon.data.name + ".gif"
+                              "/assets/sprites/" +
+                              pokemon.data.name.toLowerCase() +
+                              ".gif"
                             }
                             alt={pokemon.data.name}
                           />
@@ -613,7 +619,11 @@ function SimpleDialog(props) {
             <Grid item sm={4} className={classes.dialog_pokemon}>
               <div className={classes.pok}>
                 <img
-                  src={"/assets/sprites/" + selectedPokemon.data.name + ".gif"}
+                  src={
+                    "/assets/sprites/" +
+                    selectedPokemon.data.name.toLowerCase() +
+                    ".gif"
+                  }
                   alt={selectedPokemon.data.name}
                 />
               </div>

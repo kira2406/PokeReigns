@@ -175,7 +175,11 @@ export default function Home() {
                     >
                       <div className="pokemon__panel-sprite ">
                         <img
-                          src={"/assets/sprites/" + p.data.name + ".gif"}
+                          src={
+                            "/assets/sprites/" +
+                            p.data.name.toLowerCase() +
+                            ".gif"
+                          }
                           alt={p.data.name}
                         />
                       </div>

@@ -495,7 +495,7 @@ export default function RegionMap({ match }) {
                                         <img
                                           src={
                                             "/assets/sprites/" +
-                                            appearedPokemon.data.name +
+                                            appearedPokemon.data.name.toLowerCase() +
                                             ".gif"
                                           }
                                           alt={appearedPokemon.data.name}
@@ -567,7 +567,11 @@ export default function RegionMap({ match }) {
                     >
                       <div className="pokemon__panel_sprite">
                         <img
-                          src={"/assets/sprites/" + p.data.name + ".gif"}
+                          src={
+                            "/assets/sprites/" +
+                            p.data.name.toLowerCase() +
+                            ".gif"
+                          }
                           alt={p.data.name}
                         />
                         Ready!
