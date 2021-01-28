@@ -15,7 +15,9 @@ export function AuthProvider({ children }) {
   const [moves, setMoves] = useState([])
   const [roster, setRoster] = useState([])
   const [trainerName, setTrainerName] = useState("")
+  const [numBadges, setNumBadges] = useState(0)
   const [darkMode, setDarkMode] = useState(true)
+  const [trainerID, setTrainerid] = useState(0)
 
   function login(provider) {
     return auth.signInWithPopup(provider)
@@ -25,6 +27,9 @@ export function AuthProvider({ children }) {
     return auth.signOut()
   }
 
+  function setNumOfBadges(num) {
+    setNumBadges(num)
+  }
   function setTrainer(trainerName) {
     setTrainerName(trainerName)
   }
@@ -38,6 +43,9 @@ export function AuthProvider({ children }) {
     })
     setRoster(pokes)
     console.log("writing" + roster)
+  }
+  function setTrainerID(params) {
+    setTrainerid(params)
   }
 
   useEffect(() => {
@@ -72,6 +80,10 @@ export function AuthProvider({ children }) {
     darkMode,
     setDarkMode,
     moves,
+    setNumOfBadges,
+    numBadges,
+    setTrainerID,
+    trainerID,
   }
   return (
     <AuthContext.Provider value={value}>

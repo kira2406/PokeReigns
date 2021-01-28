@@ -1,7 +1,9 @@
 import {
   AppBar,
+  Avatar,
   Button,
   Card,
+  Divider,
   Grid,
   IconButton,
   makeStyles,
@@ -37,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     backgroundColor: theme.palette.background.default,
-    height: "auto",
+    height: "100vh",
     padding: 20,
   },
   title: {
@@ -73,6 +75,28 @@ const useStyles = makeStyles((theme) => ({
     margin: 10,
     width: "50%",
   },
+  profileNo: {
+    fontSize: 30,
+    color: "#0078FF ",
+  },
+  profileAvatar: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+  },
+  profileName: {
+    textTransform: "capitalize",
+    fontSize: 50,
+    color: "#0078FF ",
+    alignSelf: "flex-start",
+  },
+  dataPad: {
+    paddingTop: 20,
+  },
 }))
 export default function Home() {
   const classes = useStyles()
@@ -80,17 +104,25 @@ export default function Home() {
     logout,
     trainerName,
     setTrainer,
+    trainerID,
     currentUser,
     pokemons,
     loading,
     roster,
     darkMode,
     setDarkMode,
+    numBadges,
   } = useAuth()
   const history = useHistory()
   const [error, setError] = useState("")
+  const [rpokemons, setRpokemons] = useState(0)
   // const classes = useStyles()
-
+  useEffect(() => {
+    db.collection("users")
+      .doc(currentUser.uid)
+      .collection("pokemons")
+      .onSnapshot((res) => setRpokemons(res.size))
+  }, [])
   async function handleLogout() {
     setError("")
 
@@ -143,7 +175,11 @@ export default function Home() {
                     >
                       <div className="pokemon__panel-sprite ">
                         <img
-                          src={"/assets/sprites/" + p.data.name + ".gif"}
+                          src={
+                            "/assets/sprites/" +
+                            p.data.name.toLowerCase() +
+                            ".gif"
+                          }
                           alt={p.data.name}
                         />
                       </div>
@@ -173,28 +209,55 @@ export default function Home() {
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Paper className={classes.paper}>
-              <p className="parameter">
-                Trainer name:
-                <span className="value">
-                  {trainerName ? trainerName : "LOADING"}
-                </span>
-              </p>
-              <p className="parameter">
-                Trainer ID:
-                <span className="value">85985675</span>
-              </p>
-              <p className="parameter">
-                No of Pokemons:
-                <span className="value">
-                  {roster ? roster.length : "LOADING"}
-                </span>
-              </p>
-              <p className="parameter">
-                Badges:
-                <span className="value">0</span>
-              </p>
-            </Paper>
+            <Grid container direction={"column"}>
+              <Grid item>
+                <Paper className={classes.paper}>
+                  <Grid container>
+                    <Grid item sm={4} className={classes.profileAvatar}>
+                      <Avatar
+                        alt="Kushwanth"
+                        src="/assets/question.gif"
+                        className={classes.avatar}
+                      />
+                    </Grid>
+                    <Divider light />
+                    <Grid item sm={8}>
+                      <Grid container direction={"column"}>
+                        <Grid item className={classes.profileName}>
+                          {trainerName ? trainerName : "LOADING"}
+                        </Grid>
+                        <Grid item>
+                          Trainer ID:
+                          {trainerID}
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Paper>
+              </Grid>
+              <Grid item className={classes.dataPad}>
+                <Paper className={classes.paper}>
+                  <Grid container>
+                    <Grid item sm={6}>
+                      <Grid container direction={"column"}>
+                        <Grid item className={classes.profileNo}>
+                          {roster ? roster.length + rpokemons : "LOADING"}
+                        </Grid>
+                        <Grid item>Pokemons</Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item sm={6}>
+                      <Grid container direction={"column"}>
+                        <Grid item className={classes.profileNo}>
+                          {numBadges != null ? numBadges : "Loading"}
+                        </Grid>
+                        <Grid item>Badges</Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Paper>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </div>

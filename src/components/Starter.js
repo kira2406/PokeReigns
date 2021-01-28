@@ -28,13 +28,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 function Starter() {
-  const [starter, setStarter] = useState(null)
-  const [pokemon, setPokemon] = useState(null)
+  const [starter, setStarter] = useState("")
+  const [pokemon, setPokemon] = useState("")
   const [name, setName] = useState("")
   const [toHome, setToHome] = useState(false)
-  const [error, setError] = useState("")
-  const [perror, setPerror] = useState("")
-  const { currentUser, setTrainer } = useAuth()
+  const [error, setError] = useState(true)
+  const [perror, setPerror] = useState(true)
+  const [message, setMessage] = useState("")
+  const { currentUser, setTrainer, setTrainerID } = useAuth()
   const history = useHistory()
   const classes = useStyles()
   useEffect(() => {
@@ -44,7 +45,6 @@ function Starter() {
         .get()
         .then((pokemon) => {
           setPokemon(pokemon.data())
-          setPerror("")
         })
         .catch((error) => console.log(error))
       db.collection("pokemon_moves")
@@ -52,7 +52,7 @@ function Starter() {
         .get()
         .then((moves) => {
           console.log(JSON.parse(moves.data()["0"]))
-          setPerror("")
+          setPerror(false)
         })
         .catch((error) => console.log(error))
     }
@@ -62,13 +62,19 @@ function Starter() {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    if (!pokemon) {
-      setPerror("Choose your starter pokemon !")
+    if (pokemon == "") {
+      setPerror(true)
+    } else {
+      setPerror(false)
     }
-    if (!name) {
-      setError("Enter your name !")
+    if (name == "") {
+      setError(true)
+    } else {
+      setError(false)
     }
-    if (!error && !perror) {
+    console.log(error, perror)
+    if (!(error || perror)) {
+      console.log(error, perror)
       console.log("form submitting")
       pokemon.level = 5
       pokemon.pos = 1
@@ -81,6 +87,10 @@ function Starter() {
         .doc(currentUser.uid)
         .set({
           displayName: name,
+          trainerID: Math.floor(
+            100000000 + Math.random() * 900000000
+          ).toString(),
+          numBadges: 0,
         })
         .then((result) => {
           setTrainer(name)
@@ -110,7 +120,9 @@ function Starter() {
         <h2>Welcome to PokeReigns!!</h2>
         <div className="starter__subcontainer">
           <div className="starter__subcontainer--pokemon">
-            <h2>Choose your starter pokemon</h2>
+            <div className="choosetext">
+              <h2>Choose your starter pokemon</h2>
+            </div>
             <div className="pokemon__container-column">
               <div className="pokemon__container-row">
                 <div
@@ -119,7 +131,10 @@ function Starter() {
                       ? "pokemon__container-card pokemon__container-selected grass__type"
                       : "pokemon__container-card grass__type"
                   }
-                  onClick={() => setStarter("1")}
+                  onClick={() => {
+                    setStarter("1")
+                    setPerror(false)
+                  }}
                 >
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/bulbasaur.gif" alt="Bulbasaur" />
@@ -133,7 +148,10 @@ function Starter() {
                       ? "pokemon__container-card pokemon__container-selected fire__type"
                       : "pokemon__container-card fire__type"
                   }
-                  onClick={() => setStarter("4")}
+                  onClick={() => {
+                    setStarter("4")
+                    setPerror(false)
+                  }}
                 >
                   <div className="pokemon__sprite">
                     <img
@@ -150,7 +168,10 @@ function Starter() {
                       ? "pokemon__container-card pokemon__container-selected water__type"
                       : "pokemon__container-card water__type"
                   }
-                  onClick={() => setStarter("7")}
+                  onClick={() => {
+                    setStarter("7")
+                    setPerror(false)
+                  }}
                 >
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/squirtle.gif" alt="squirtle" />
@@ -166,7 +187,10 @@ function Starter() {
                       ? "pokemon__container-card pokemon__container-selected grass__type"
                       : "pokemon__container-card grass__type"
                   }
-                  onClick={() => setStarter("387")}
+                  onClick={() => {
+                    setStarter("387")
+                    setPerror(false)
+                  }}
                 >
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/turtwig.gif" alt="Turtwig" />
@@ -180,7 +204,10 @@ function Starter() {
                       ? "pokemon__container-card pokemon__container-selected fire__type"
                       : "pokemon__container-card fire__type"
                   }
-                  onClick={() => setStarter("390")}
+                  onClick={() => {
+                    setStarter("390")
+                    setPerror(false)
+                  }}
                 >
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/chimchar.gif" alt="Chimchar" />
@@ -194,7 +221,10 @@ function Starter() {
                       ? "pokemon__container-card pokemon__container-selected water__type"
                       : "pokemon__container-card water__type"
                   }
-                  onClick={() => setStarter("393")}
+                  onClick={() => {
+                    setStarter("393")
+                    setPerror(false)
+                  }}
                 >
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/piplup.gif" alt="Piplup" />
@@ -210,7 +240,10 @@ function Starter() {
                       ? "pokemon__container-card pokemon__container-selected grass__type"
                       : "pokemon__container-card grass__type"
                   }
-                  onClick={() => setStarter("650")}
+                  onClick={() => {
+                    setStarter("650")
+                    setPerror(false)
+                  }}
                 >
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/chespin.gif" alt="Chespin" />
@@ -224,7 +257,10 @@ function Starter() {
                       ? "pokemon__container-card pokemon__container-selected fire__type"
                       : "pokemon__container-card fire__type"
                   }
-                  onClick={() => setStarter("653")}
+                  onClick={() => {
+                    setStarter("653")
+                    setPerror(false)
+                  }}
                 >
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/fennekin.gif" alt="Fennekin" />
@@ -238,7 +274,10 @@ function Starter() {
                       ? "pokemon__container-card pokemon__container-selected water__type"
                       : "pokemon__container-card water__type"
                   }
-                  onClick={() => setStarter("656")}
+                  onClick={() => {
+                    setStarter("656")
+                    setPerror(false)
+                  }}
                 >
                   <div className="pokemon__sprite">
                     <img src="/assets/sprites/froakie.gif" alt="Froakie" />
@@ -265,22 +304,30 @@ function Starter() {
                 name="name"
                 placeholder="Your Name"
                 variant="outlined"
+                autoComplete="off"
                 required
                 onChange={(e) => {
                   if (e.target.value.length < 6) {
-                    setError("Minimum length must be 6 characters !")
+                    setError(true)
+                    setMessage("Minimum length must be 6 characters !")
                   } else {
                     setName(e.target.value)
-                    setError("")
+                    setMessage("")
+                    setError(false)
                   }
                 }}
               />
-              <p className={error !== "" ? "error__red" : "error__none"}>
-                {error}
-              </p>
-              <p className={perror !== "" ? "error__red" : "error__none"}>
-                {perror}
-              </p>
+              {message}
+              {error ? (
+                <p className={error !== "" ? "error__red" : "error__none"}>
+                  Enter your name
+                </p>
+              ) : null}
+              {perror ? (
+                <p className={perror !== "" ? "error__red" : "error__none"}>
+                  Choose your starter pokemon !
+                </p>
+              ) : null}
               <Button
                 className="start__button"
                 type="submit"

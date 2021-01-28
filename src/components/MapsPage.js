@@ -126,7 +126,9 @@ export default function MapsPage() {
             <Button color="primary" onClick={() => history.push("/maps")}>
               Maps
             </Button>
-            <Button color="primary">Battle</Button>
+            <Button color="primary" onClick={() => history.push("/battle")}>
+              Battle
+            </Button>
             <Button color="primary" onClick={handleLogout}>
               Logout
             </Button>
@@ -151,7 +153,11 @@ export default function MapsPage() {
                     >
                       <div className="pokemon__panel-sprite ">
                         <img
-                          src={"/assets/sprites/" + p.data.name + ".gif"}
+                          src={
+                            "/assets/sprites/" +
+                            p.data.name.toLowerCase() +
+                            ".gif"
+                          }
                           alt={p.data.name}
                         />
                       </div>

@@ -9,15 +9,23 @@
 }
 
 .pokemon__panel-sprite {
-  height: 75px;
+  height: auto;
   flex: 1;
+}
+.gympokemon__panel-sprite {
+  height: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
 }
 .info__container {
   width: auto;
   margin-left: 40px;
   display: flex;
   flex: 3;
-  /* background-color: darkslateblue; */
+  justify-content: space-between;
+  align-self: flex-end;
   flex-direction: column;
   align-items: space-between;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);

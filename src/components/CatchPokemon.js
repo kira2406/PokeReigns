@@ -484,10 +484,10 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
               ])
               setCatchingPokemon(false)
             }
-          }, 2000)
-        }, 2000)
-      }, 2000)
-    }, 2000)
+          }, 1000)
+        }, 1000)
+      }, 1000)
+    }, 1000)
   }
 
   function Battler(pokemon, enemy, pokemonMove, enemyMove) {
@@ -512,14 +512,16 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
         //       enemy.data.defense
         //     )
         // )
-        enemy.data.currentHP =
+        enemy.data.currentHP = Math.max(
+          0,
           enemy.data.currentHP -
-          damageCalc(
-            pokemon.data.level,
-            pokemon.data.attack,
-            pokemonMove.power,
-            enemy.data.defense
-          )
+            damageCalc(
+              pokemon.data.level,
+              pokemon.data.attack,
+              pokemonMove.power,
+              enemy.data.defense
+            )
+        )
       }
 
       if (enemy.data.currentHP <= 0) {
@@ -528,14 +530,16 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
       }
 
       if (enemyMove["damage_class"] === "physical") {
-        pokemon.data.currentHP =
+        pokemon.data.currentHP = Math.max(
+          0,
           pokemon.data.currentHP -
-          damageCalc(
-            enemy.data.level,
-            enemy.data.attack,
-            enemyMove.power,
-            pokemon.data.defense
-          )
+            damageCalc(
+              enemy.data.level,
+              enemy.data.attack,
+              enemyMove.power,
+              pokemon.data.defense
+            )
+        )
       }
 
       if (pokemon.data.currentHP <= 0) {
@@ -549,14 +553,16 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
       battlerLog.push(enemy.data.name + " used " + enemyMove.identifier)
       battlerLog.push(pokemon.data.name + " used " + pokemonMove.identifier)
       if (enemyMove["damage_class"] === "physical") {
-        pokemon.data.currentHP =
+        pokemon.data.currentHP = Math.max(
+          0,
           pokemon.data.currentHP -
-          damageCalc(
-            enemy.data.level,
-            enemy.data.attack,
-            enemyMove.power,
-            pokemon.data.defense
-          )
+            damageCalc(
+              enemy.data.level,
+              enemy.data.attack,
+              enemyMove.power,
+              pokemon.data.defense
+            )
+        )
       }
       if (pokemon.data.currentHP <= 0) {
         setFainted(true)
@@ -573,14 +579,16 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
         //       enemy.data.defense
         //     )
         // )
-        enemy.data.currentHP =
+        enemy.data.currentHP = Math.max(
+          0,
           enemy.data.currentHP -
-          damageCalc(
-            pokemon.data.level,
-            pokemon.data.attack,
-            pokemonMove.power,
-            enemy.data.defense
-          )
+            damageCalc(
+              pokemon.data.level,
+              pokemon.data.attack,
+              pokemonMove.power,
+              enemy.data.defense
+            )
+        )
       }
       if (enemy.data.currentHP <= 0) {
         setEnemyFaints(true)
@@ -609,7 +617,7 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
                       <img
                         src={
                           "/assets/sprites/" +
-                          roster[inBattlePokemon].data.name +
+                          roster[inBattlePokemon].data.name.toLowerCase() +
                           ".gif"
                         }
                         alt={roster[inBattlePokemon].data.name}
@@ -663,7 +671,7 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
                       <img
                         src={
                           "/assets/sprites/" +
-                          appearedPokemon.data.name +
+                          appearedPokemon.data.name.toLowerCase() +
                           ".gif"
                         }
                         alt={appearedPokemon.data.name}
@@ -720,7 +728,7 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
                           <img
                             src={
                               "/assets/sprites/" +
-                              wildPokemon.data.name +
+                              wildPokemon.data.name.toLowerCase() +
                               ".gif"
                             }
                             alt={wildPokemon.data.name}
@@ -758,7 +766,7 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
               )}
             </Grid>
             <Grid container spacing={3} className={classes.move_container}>
-              {!fainted && !pokemonCaught ? (
+              {!fainted && !pokemonCaught && !enemyFaints ? (
                 <>
                   <Grid item sm={3} className={classes.moveButtonContainer}>
                     <Button
@@ -778,6 +786,7 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
                             movesData[wildPokemon.data.move1]
                           )
                         )
+                        setCatchingLog("")
                       }}
                     >
                       {
@@ -805,6 +814,7 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
                             movesData[wildPokemon.data.move2]
                           )
                         )
+                        setCatchingLog("")
                       }}
                     >
                       {
@@ -832,6 +842,7 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
                             movesData[wildPokemon.data.move3]
                           )
                         )
+                        setCatchingLog("")
                       }}
                     >
                       {
@@ -859,6 +870,7 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
                             movesData[wildPokemon.data.move4]
                           )
                         )
+                        setCatchingLog("")
                       }}
                     >
                       {
@@ -872,28 +884,30 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
               ) : null}
               {!pokemonCaught ? (
                 <Grid item sm={6} className={classes.moveButtonContainer}>
-                  <Tooltip
-                    title={
-                      <React.Fragment>
-                        <Typography>
-                          Make sure the wild Pokemon's health is low before
-                          attempting to catch it
-                        </Typography>
-                      </React.Fragment>
-                    }
-                  >
-                    <Button
-                      className={classes.catchButton}
-                      onClick={() => {
-                        // setUserHealth(userHealth - 10)
-                        setBattlelog("")
-                        throwPokeBall()
-                        // wildPokemon.currentHP = wildPokemon.currentHP - 10
-                      }}
+                  {enemyFaints ? null : (
+                    <Tooltip
+                      title={
+                        <React.Fragment>
+                          <Typography>
+                            Make sure the wild Pokemon's health is low before
+                            attempting to catch it
+                          </Typography>
+                        </React.Fragment>
+                      }
                     >
-                      Catch Pokemon
-                    </Button>
-                  </Tooltip>
+                      <Button
+                        className={classes.catchButton}
+                        onClick={() => {
+                          // setUserHealth(userHealth - 10)
+                          setBattlelog("")
+                          throwPokeBall()
+                          // wildPokemon.currentHP = wildPokemon.currentHP - 10
+                        }}
+                      >
+                        Catch Pokemon
+                      </Button>
+                    </Tooltip>
+                  )}
                 </Grid>
               ) : null}
               <Grid item sm={6} className={classes.moveButtonContainer}>
@@ -950,7 +964,7 @@ export default function CatchPokemon({ rosters, appearedPokemon, level }) {
                               <img
                                 src={
                                   "/assets/sprites/" +
-                                  pokemon.data.name +
+                                  pokemon.data.name.toLowerCase() +
                                   ".gif"
                                 }
                                 alt={pokemon.data.name}
