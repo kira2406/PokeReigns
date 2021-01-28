@@ -607,7 +607,6 @@ function SimpleDialog(props) {
       <DialogTitle id="customized-dialog-title" onClose={handleClose}>
         Edit Moves
       </DialogTitle>
-      {console.log("move is " + selectedPokemon.data.move1)}
       {selectedPokemon ? (
         <DialogContent>
           <Grid container alignItems="center" justify="center">
