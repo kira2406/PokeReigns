@@ -126,7 +126,9 @@ export default function MapsPage() {
             <Button color="primary" onClick={() => history.push("/maps")}>
               Maps
             </Button>
-            <Button color="primary">Battle</Button>
+            <Button color="primary" onClick={() => history.push("/battle")}>
+              Battle
+            </Button>
             <Button color="primary" onClick={handleLogout}>
               Logout
             </Button>

@@ -87,26 +87,41 @@
   background-color: #e9e;
 }
 .grass__type {
-  box-shadow: 0 1px rgba(43, 255, 24, 0.808), 0 2px rgba(43, 255, 24, 0.829);
+  box-shadow: 0 1px rgba(43, 255, 24, 0.808), 0 2px rgba(43, 255, 24, 0.829),
+    0 1px 3px rgba(0, 0, 0, 0.22), 0 1px 2px rgba(0, 0, 0, 0.34);
 }
 .fire__type {
-  box-shadow: 0 1px rgba(255, 78, 24, 0.808), 0 2px rgba(255, 78, 24, 0.829);
+  box-shadow: 0 1px rgba(255, 78, 24, 0.808), 0 2px rgba(255, 78, 24, 0.829),
+    0 1px 3px rgba(0, 0, 0, 0.22), 0 1px 2px rgba(0, 0, 0, 0.34);
 }
 .water__type {
-  box-shadow: 0 1px rgba(24, 86, 255, 0.808), 0 2px rgba(24, 86, 255, 0.829);
+  box-shadow: 0 1px rgba(24, 86, 255, 0.808), 0 2px rgba(24, 86, 255, 0.829),
+    0 1px 3px rgba(0, 0, 0, 0.22), 0 1px 2px rgba(0, 0, 0, 0.34);
+}
+.rock__type {
+  box-shadow: 0 1px rgba(187, 170, 102, 0.88), 0 2px rgba(187, 170, 102, 1),
+    0 1px 3px rgba(0, 0, 0, 0.22), 0 1px 2px rgba(0, 0, 0, 0.34);
 }
 .poison__type {
-  box-shadow: 0 1px rgba(170, 85, 153, 0.88), 0 2px rgba(170, 85, 153, 1);
+  box-shadow: 0 1px rgba(170, 85, 153, 0.88), 0 2px rgba(170, 85, 153, 1),
+    0 1px 3px rgba(0, 0, 0, 0.22), 0 1px 2px rgba(0, 0, 0, 0.34);
 }
-.normal_type {
-  box-shadow: 0 1px rgba(170, 170, 153, 0.88), 0 2px rgba(170, 170, 153, 0.88);
+.normal__type {
+  box-shadow: 0 1px rgba(170, 170, 153, 0.88), 0 2px rgba(170, 170, 153, 0.88),
+    0 1px 3px rgba(0, 0, 0, 0.22), 0 1px 2px rgba(0, 0, 0, 0.34);
+}
+.ground__type {
+  box-shadow: 0 1px rgba(221, 187, 85, 0.88), 0 2px rgba(221, 187, 85, 0.88),
+    0 1px 3px rgba(0, 0, 0, 0.22), 0 1px 2px rgba(0, 0, 0, 0.34);
 }
 .none__type {
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.22), 0 2px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.22), 0 2px 2px rgba(0, 0, 0, 0.24),
+    0 1px 3px rgba(0, 0, 0, 0.22), 0 1px 2px rgba(0, 0, 0, 0.34);
 }
 .electric__type {
   box-shadow: 0 2px 3px rgba(255, 204, 51, 0.8),
-    0 2px 2px rgba(255, 204, 51, 0.8);
+    0 2px 2px rgba(255, 204, 51, 0.8), 0 1px 3px rgba(0, 0, 0, 0.22),
+    0 1px 2px rgba(0, 0, 0, 0.34);
 }
 .grass__button {
   background-color: #7c5 !important;
@@ -134,7 +149,7 @@
   background-color: rgb(170, 85, 153) !important;
 }
 .ground__button {
-  background-color: #db5 !important;
+  background-color: rgb(221, 187, 85) !important;
 }
 .flying__button {
   background-color: #89f !important;
@@ -146,7 +161,7 @@
   background-color: #ab2 !important;
 }
 .rock__button {
-  background-color: #ba6 !important;
+  background-color: rgb(187, 170, 102) !important;
 }
 .ghost__button {
   background-color: #66b !important;

@@ -1,4 +1,11 @@
-import { Box, Button, Grid, makeStyles, Paper } from "@material-ui/core"
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  makeStyles,
+  Paper,
+} from "@material-ui/core"
 import React, { Component, useState } from "react"
 import db, { auth, provider } from "./firebase"
 import { useHistory } from "react-router-dom"
@@ -22,6 +29,13 @@ const useStyles = makeStyles((theme) => ({
     padding: 30,
     height: "100%",
     minHeight: "100vh",
+  },
+  front: {
+    backgroundImage: "url('/assets/poke.jpg')",
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    height: "50vh",
+    marginTop: 30,
   },
 }))
 function Login() {
@@ -92,11 +106,75 @@ function Login() {
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paper}>
             <h2>Poke Reigns</h2>
+            <p>Pokemon Online RPG Game</p>
+            <Container className={classes.front}></Container>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paper}>
-            <h2>Login</h2>
+            <Grid container className={classes.pokemon_container}>
+              <Grid item className={classes.pokemon_panel} sm={4}>
+                <div className="pokemon__panel_sprite">
+                  <img src="/assets/sprites/pikachu.gif" alt="pikachu" />
+                </div>
+              </Grid>
+              <Grid item className={classes.pokemon_panel} sm={4}>
+                <div className="pokemon__panel_sprite">
+                  <img src="/assets/sprites/charmander.gif" alt="charmander" />
+                </div>
+              </Grid>
+              <Grid item className={classes.pokemon_panel} sm={4}>
+                <div className="pokemon__panel_sprite">
+                  <img src="/assets/sprites/turtwig.gif" alt="turtwig" />
+                </div>
+              </Grid>
+              <Grid item className={classes.pokemon_panel} sm={4}>
+                <div className="pokemon__panel_sprite">
+                  <img src="/assets/sprites/eevee.gif" alt="eevee" />
+                </div>
+              </Grid>
+              <Grid item className={classes.pokemon_panel} sm={4}>
+                <div className="pokemon__panel_sprite">
+                  <img src="/assets/sprites/riolu.gif" alt="riolu" />
+                </div>
+              </Grid>
+              <Grid item className={classes.pokemon_panel} sm={4}>
+                <div className="pokemon__panel_sprite">
+                  <img src="/assets/sprites/jigglypuff.gif" alt="jigglypuff" />
+                </div>
+              </Grid>
+              <Grid item className={classes.pokemon_panel} sm={4}>
+                <div className="pokemon__panel_sprite">
+                  <img src="/assets/sprites/glaceon.gif" alt="glaceon" />
+                </div>
+              </Grid>
+              <Grid item className={classes.pokemon_panel} sm={4}>
+                <div className="pokemon__panel_sprite">
+                  <img src="/assets/sprites/greninja.gif" alt="greninja" />
+                </div>
+              </Grid>
+              <Grid item className={classes.pokemon_panel} sm={4}>
+                <div className="pokemon__panel_sprite">
+                  <img src="/assets/sprites/blastoise.gif" alt="blastoise" />
+                </div>
+              </Grid>
+              <Grid item className={classes.pokemon_panel} sm={4}>
+                <div className="pokemon__panel_sprite">
+                  <img src="/assets/sprites/gengar.gif" alt="gengar" />
+                </div>
+              </Grid>
+              <Grid item className={classes.pokemon_panel} sm={4}>
+                <div className="pokemon__panel_sprite">
+                  <img src="/assets/sprites/registeel.gif" alt="registeel" />
+                </div>
+              </Grid>
+              <Grid item className={classes.pokemon_panel} sm={4}>
+                <div className="pokemon__panel_sprite">
+                  <img src="/assets/sprites/grotle.gif" alt="grotle" />
+                </div>
+              </Grid>
+            </Grid>
+            <h2>Join US!</h2>
             <Button color="primary" variant="contained" onClick={loginHandler}>
               Login with Google
             </Button>

@@ -556,19 +556,19 @@ export default function RegionMap({ match }) {
               <p>Your Roster</p>
               <Grid container className={classes.pokemon_container}>
                 {roster.map((p, index) =>
-                  p.name ? (
+                  p.data.name ? (
                     <Grid
                       item
                       key={p.data.pos}
                       className={
-                        classes.pokemon_panel + " " + p.type1 + "__type"
+                        classes.pokemon_panel + " " + p.data.type1 + "__type"
                       }
                       sm={6}
                     >
                       <div className="pokemon__panel_sprite">
                         <img
-                          src={"/assets/sprites/" + p.name + ".gif"}
-                          alt={p.name}
+                          src={"/assets/sprites/" + p.data.name + ".gif"}
+                          alt={p.data.name}
                         />
                         Ready!
                       </div>
@@ -576,7 +576,7 @@ export default function RegionMap({ match }) {
                   ) : (
                     <Grid
                       item
-                      key={p.pos}
+                      key={p.data.pos}
                       className={classes.pokemon_panel + " none__type"}
                       sm={6}
                     >

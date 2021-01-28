@@ -41,6 +41,8 @@ function App() {
     setTrainer,
     setRosterData,
     moves,
+    setTrainerID,
+    setNumOfBadges,
   } = useAuth()
 
   useEffect(() => {
@@ -50,9 +52,13 @@ function App() {
         setCurrentUser(user)
         db.collection("users")
           .doc(user.uid)
-          .get()
-          .then((result) => {
-            if (result.exists) setTrainer(result.data()["displayName"])
+          .onSnapshot((result) => {
+            if (result.exists) {
+              setTrainerID(result.data()["trainerID"])
+              console.log(result.data()["trainerID"])
+              setTrainer(result.data()["displayName"])
+              setNumOfBadges(result.data()["numBadges"])
+            }
           })
         var count = 1
         db.collection("users")

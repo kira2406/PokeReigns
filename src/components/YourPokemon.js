@@ -344,7 +344,9 @@ export default function YourPokemon() {
             <Button color="primary" onClick={() => history.push("/maps")}>
               Maps
             </Button>
-            <Button color="primary">Battle</Button>
+            <Button color="primary" onClick={() => history.push("/battle")}>
+              Battle
+            </Button>
             <Button color="primary" onClick={handleLogout}>
               Logout
             </Button>
@@ -603,8 +605,9 @@ function SimpleDialog(props) {
       open={open}
     >
       <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-        Edit Roster
+        Edit Moves
       </DialogTitle>
+      {console.log("move is " + selectedPokemon.data.move1)}
       {selectedPokemon ? (
         <DialogContent>
           <Grid container alignItems="center" justify="center">
@@ -641,7 +644,7 @@ function SimpleDialog(props) {
                           ? setDisplaySave(false)
                           : setDisplaySave(true)
                       }}
-                      defaultValue={selectedPokemon.data.move1}
+                      defaultValue={selectedPokemon.data.move2}
                       inputProps={{
                         name: "move1",
                         id: "filled-age-native-simple",
